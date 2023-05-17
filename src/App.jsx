@@ -1,9 +1,15 @@
 function App() {
+
   return (
     <>
-      <h1 className="text-blue-400">Hola</h1>
+      <div className="grid place-content-center h-screen">
+        <a href="public/animation_pages/renacer/index.html">
+          <button className="border-2 p-2">#1</button>
+        </a>
+        <button className="border-2 p-2">#2</button>
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
