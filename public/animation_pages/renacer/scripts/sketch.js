@@ -1,15 +1,20 @@
 const size = 500;
+let isPlaying = false;
 
 let kick, kickVolume;
 let ambient, ambientVolume;
 let hihats, hihatsVolume;
+let ambient2, ambient2Volume;
+let drums, drumsVolume;
+
 let points = [];
 
 function preload() {
-  soundFormats("wav");
-  kick = loadSound("assets/4renacer.wav");
-  ambient = loadSound("assets/1renacer.wav");
-  hihats = loadSound('assets/3renacer.wav')
+  kick = new Tone.Player("assets/kickRenacer.mp3").toDestination();
+  drums = new Tone.Player("assets/drumsRenacer.mp3").toDestination();
+  hihats = new Tone.Player("assets/hihatsRenacer.mp3").toDestination();
+  ambient = new Tone.Player("assets/ambientRenacer.mp3").toDestination();
+  ambient2 = new Tone.Player("assets/ambient2Renacer.mp3").toDestination();
 }
 
 function setup() {
@@ -18,18 +23,15 @@ function setup() {
   for (let i = 0; i < 4; i++) points.push(new Point());
 
   canvas.mousePressed(() => {
-    if (!kick.isPlaying()) {
-      kick.play();
-      kickVolume = new p5.Amplitude();
-      kickVolume.setInput(kick);
-
-      ambient.play();
-      ambientVolume = new p5.Amplitude();
-      ambientVolume.setInput(ambient);
-
-      hihats.play();
-      hihatsVolume = new p5.Amplitude();
-      hihatsVolume.setInput(hihats);
+    if (!isPlaying) {
+      Tone.loaded().then(() => {
+        kick.start();
+        drums.start();
+        hihats.start();
+        ambient.start();
+        ambient2.start();
+        isPlaying = true;
+      });
     }
   });
 }
@@ -37,6 +39,8 @@ function setup() {
 function draw() {
   background(map(ambientVolume?.getLevel() ?? 0, 0, 0.1, 10, 15));
   const kickLevel = kickVolume?.getLevel();
+
+  console.log(kick.volume.value)
 
   noFill();
   strokeWeight(kickLevel * 100);
