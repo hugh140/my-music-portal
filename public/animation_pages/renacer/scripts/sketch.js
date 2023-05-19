@@ -1,4 +1,4 @@
-const size = 500;
+const size = 400;
 let isPlaying = false;
 let oscIncrement = 0;
 
@@ -11,7 +11,7 @@ let drums, drumsVolume;
 let points = [];
 let curves = [];
 
-let initialMusicTime = 0;
+let initialTime = 0;
 let finishedTime = 0;
 let currentTime = 0;
 
@@ -38,7 +38,7 @@ function preload() {
 }
 
 function setup() {
-  const canvas = createCanvas(700, 700);
+  const canvas = createCanvas(500, 500);
 
   for (let i = 0; i < 4; i++) points.push(new Point());
   for (let i = 0; i < 10; i++) curves.push(new Curve());
@@ -76,4 +76,7 @@ function draw() {
   drawNodes(kickLevel, hihatsLevel);
   drawHexagon(kickLevel, hihatsLevel);
   drawCircle(hihatsLevel);
+
+  fill(255);
+  rect(0, 500, moveBar(), -5);
 }

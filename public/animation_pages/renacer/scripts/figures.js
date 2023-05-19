@@ -8,8 +8,8 @@ class Point {
   }
 
   draw(kickLevel) {
-    this.pointRotate.x = 250 * sin(this.angle) + width / 2;
-    this.pointRotate.y = 250 * cos(this.angle) + width / 2;
+    this.pointRotate.x = 200 * sin(this.angle) + width / 2;
+    this.pointRotate.y = 200 * cos(this.angle) + width / 2;
     this.angle += this.incrementAngle;
     if (kickLevel > 0.85) this.incrementAngle = random(-0.1, 0.1);
 
@@ -51,8 +51,8 @@ class Curve {
   }
 
   draw(ambient2Level) {
-    ambient2Level *= random(0.1, 10);
-    fill(ambient2Level *= random(0.1, 10));
+    ambient2Level *= random(0.1, 20);
+    fill(ambient2Level, ambient2Level, ambient2Level, 100);
     strokeWeight(ambient2Level && ambient2Level > - 10 ? 1 : 0);
 
     bezier(

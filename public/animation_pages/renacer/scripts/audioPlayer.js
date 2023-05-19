@@ -4,7 +4,20 @@ const playIcon =
 const pauseIcon =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"/></svg>';
 
+const loadIcon =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>';
+
+const audio = new Audio("assets/kickRenacer.mp3");
+const meter = document.getElementById("animationDuration");
+let audioDuration, audioPlayReference;
+
+audio.addEventListener("loadedmetadata", function () {
+  audioDuration = audio.duration;
+});
+
 function playMusic() {
+  playPauseButton.innerHTML = loadIcon;
+  playPauseButton.setAttribute("id", "loadSpin");
   Tone.loaded().then(() => {
     if (isPlaying) {
       kick.stop();
@@ -13,19 +26,21 @@ function playMusic() {
       ambient.stop();
       ambient2.stop();
       finishedTime = Tone.immediate();
-      currentTime += finishedTime - initialMusicTime;
+      currentTime += finishedTime - initialTime;
       playPauseButton.innerHTML = playIcon;
+      playPauseButton.removeAttribute("id");
     } else {
-      kick.start().seek(initialMusicTime);
-      drums.start().seek(initialMusicTime);
-      hihats.start().seek(initialMusicTime);
-      ambient.start().seek(initialMusicTime);
-      ambient2.start().seek(initialMusicTime);
+      kick.start().seek(currentTime);
+      drums.start().seek(currentTime);
+      hihats.start().seek(currentTime);
+      ambient.start().seek(currentTime);
+      ambient2.start().seek(currentTime);
 
-      initialMusicTime = Tone.immediate();
+      initialTime = Tone.now();
       playPauseButton.innerHTML = pauseIcon;
+      playPauseButton.removeAttribute("id");
     }
-
+    audioPlayReference = Tone.now();
     isPlaying = !isPlaying;
   });
 }
@@ -38,9 +53,22 @@ function stopMusic() {
     ambient.stop();
     ambient2.stop();
     currentTime = 0;
-    initialMusicTime = 0;
+    initialTime = 0;
     finishedTime = 0;
     isPlaying = false;
     playPauseButton.innerHTML = playIcon;
   });
+}
+
+function moveBar() {
+  if (isPlaying) {
+    const musicTime = currentTime + Tone.now() - audioPlayReference;
+    const minutes = musicTime ? Math.floor(musicTime / 60) : 0;
+    const seconds = musicTime ? Math.floor(musicTime) % 60 : 0;
+    meter.innerHTML = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
+    if (audioDuration <= musicTime) stopMusic();
+
+    return (musicTime * 500) / audioDuration;
+  } else return (currentTime * 500) / audioDuration;
 }

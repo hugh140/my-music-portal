@@ -1,7 +1,7 @@
 function drawCircun() {
   noFill();
   stroke(100);
-  circle(width / 2, height / 2, 500);
+  circle(width / 2, height / 2, 400);
 }
 
 function drawRhythmCircle(kickLevel, hihatsLevel) {
@@ -55,24 +55,24 @@ function drawHexagon(kickLevel, hihatsLevel) {
   if (kickLevel > 0.5) {
     y1 =
       Math.random() > 0.5
-        ? height / 2 + 250 + randomMovement
-        : height / 2 - 250 + randomMovement;
+        ? height / 2 + 200 + randomMovement
+        : height / 2 - 200 + randomMovement;
     x2 =
       Math.random() > 0.5
-        ? width / 2 + 216.51 + randomMovement
-        : width / 2 - 216.51 + randomMovement;
+        ? width / 2 + 173.21 + randomMovement
+        : width / 2 - 173.21 + randomMovement;
     y2 =
       Math.random() > 0.5
-        ? height / 2 + 125 + randomMovement
-        : height / 2 - 125 + randomMovement;
+        ? height / 2 + 100 + randomMovement
+        : height / 2 - 100 + randomMovement;
     x3 =
       Math.random() > 0.5
-        ? width / 2 + 216.51 + randomMovement
-        : width / 2 - 216.51 + randomMovement;
+        ? width / 2 + 173.21 + randomMovement
+        : width / 2 - 173.21 + randomMovement;
     y3 =
       Math.random() > 0.5
-        ? height / 2 + 125 + randomMovement
-        : height / 2 - 125 + randomMovement;
+        ? height / 2 + 100 + randomMovement
+        : height / 2 - 100 + randomMovement;
   }
 
   if (hihatsLevel > -70) fill(30);
