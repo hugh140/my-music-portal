@@ -1,4 +1,4 @@
-const size = 400;
+const size = 300;
 let isPlaying = false;
 let oscIncrement = 0;
 
@@ -38,7 +38,7 @@ function preload() {
 }
 
 function setup() {
-  const canvas = createCanvas(500, 500);
+  const canvas = createCanvas(400, 400);
 
   for (let i = 0; i < 4; i++) points.push(new Point());
   for (let i = 0; i < 10; i++) curves.push(new Curve());
@@ -78,5 +78,5 @@ function draw() {
   drawCircle(hihatsLevel);
 
   fill(255);
-  rect(0, 500, moveBar(), -5);
+  musicBar();
 }

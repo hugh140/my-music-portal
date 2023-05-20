@@ -8,8 +8,8 @@ class Point {
   }
 
   draw(kickLevel) {
-    this.pointRotate.x = 200 * sin(this.angle) + width / 2;
-    this.pointRotate.y = 200 * cos(this.angle) + width / 2;
+    this.pointRotate.x = 150 * sin(this.angle) + width / 2;
+    this.pointRotate.y = 150 * cos(this.angle) + width / 2;
     this.angle += this.incrementAngle;
     if (kickLevel > 0.85) this.incrementAngle = random(-0.1, 0.1);
 

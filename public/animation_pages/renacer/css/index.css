@@ -2,7 +2,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  height: 90vh;
 }
 
 body {
@@ -10,13 +10,17 @@ body {
 }
 
 article {
-  display: flex;
-  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
 }
 
 button {
   width: 40px;
   height: 40px;
+  margin: 0 2px
 }
 
 button svg {
@@ -24,11 +28,45 @@ button svg {
   height: 20px;
 }
 
-h4 {
-  color: white;
+#controlsContainer {
+  display: flex;
+  justify-content: center;
+}
+
+#musicTime {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 1rem;
+}
+
+#musicTime input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #ffffff;
+  outline: none;
   margin: 0;
-  margin-top: 5px;
+  padding: 0;
+}
+
+#musicTime input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #303030;
+  cursor: pointer;
+}
+
+#musicTime h4 {
+  user-select: none;
+  width: 50px;
+  height: 25px;
+  margin: 0;
+  color: black;
+  background-color: white;
   text-align: center;
+  line-height: 150%;
   font-family: Arial, Helvetica, sans-serif;
 }
 

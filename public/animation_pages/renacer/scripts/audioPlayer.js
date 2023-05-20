@@ -8,41 +8,49 @@ const loadIcon =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>';
 
 const audio = new Audio("assets/kickRenacer.mp3");
+const musicTimeRange = document.getElementById("musicSlider");
 const meter = document.getElementById("animationDuration");
 let audioDuration, audioPlayReference;
 
 audio.addEventListener("loadedmetadata", function () {
   audioDuration = audio.duration;
+  musicTimeRange.max = audioDuration;
 });
 
-function playMusic() {
+function playMusicButton() {
   playPauseButton.innerHTML = loadIcon;
   playPauseButton.setAttribute("id", "loadSpin");
   Tone.loaded().then(() => {
-    if (isPlaying) {
-      kick.stop();
-      drums.stop();
-      hihats.stop();
-      ambient.stop();
-      ambient2.stop();
-      finishedTime = Tone.immediate();
-      currentTime += finishedTime - initialTime;
-      playPauseButton.innerHTML = playIcon;
-      playPauseButton.removeAttribute("id");
-    } else {
-      kick.start().seek(currentTime);
-      drums.start().seek(currentTime);
-      hihats.start().seek(currentTime);
-      ambient.start().seek(currentTime);
-      ambient2.start().seek(currentTime);
+    if (isPlaying) pauseMusic();
+    else playMusic();
 
-      initialTime = Tone.now();
-      playPauseButton.innerHTML = pauseIcon;
-      playPauseButton.removeAttribute("id");
-    }
     audioPlayReference = Tone.now();
     isPlaying = !isPlaying;
   });
+}
+
+function playMusic() {
+  kick.start().seek(currentTime);
+  drums.start().seek(currentTime);
+  hihats.start().seek(currentTime);
+  ambient.start().seek(currentTime);
+  ambient2.start().seek(currentTime);
+
+  initialTime = Tone.now();
+  playPauseButton.innerHTML = pauseIcon;
+  playPauseButton.removeAttribute("id");
+}
+
+function pauseMusic() {
+  kick.stop();
+  drums.stop();
+  hihats.stop();
+  ambient.stop();
+  ambient2.stop();
+  finishedTime = Tone.immediate();
+  currentTime += finishedTime - initialTime;
+  playPauseButton.innerHTML = playIcon;
+  playPauseButton.removeAttribute("id");
 }
 
 function stopMusic() {
@@ -57,18 +65,30 @@ function stopMusic() {
     finishedTime = 0;
     isPlaying = false;
     playPauseButton.innerHTML = playIcon;
+    musicTimeRange.value = 0;
   });
 }
 
-function moveBar() {
+function musicBar() {
   if (isPlaying) {
     const musicTime = currentTime + Tone.now() - audioPlayReference;
+    musicTimeRange.value = musicTime;
+
     const minutes = musicTime ? Math.floor(musicTime / 60) : 0;
     const seconds = musicTime ? Math.floor(musicTime) % 60 : 0;
     meter.innerHTML = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 
     if (audioDuration <= musicTime) stopMusic();
-
-    return (musicTime * 500) / audioDuration;
-  } else return (currentTime * 500) / audioDuration;
+  }
 }
+
+musicTimeRange.addEventListener("input", (event) => {
+  pauseMusic();
+  isPlaying = false;
+  currentTime = Number(event.target.value);
+
+  const musicTime = event.target.value;
+  const minutes = musicTime ? Math.floor(musicTime / 60) : 0;
+  const seconds = musicTime ? Math.floor(musicTime) % 60 : 0;
+  meter.innerHTML = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+});
