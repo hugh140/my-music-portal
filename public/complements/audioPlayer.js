@@ -7,15 +7,24 @@ const pauseIcon =
 const loadIcon =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>';
 
-const audio = new Audio("assets/kickRenacer.mp3");
 const musicTimeRange = document.getElementById("musicSlider");
 const meter = document.getElementById("animationDuration");
-let audioDuration, audioPlayReference;
+const playPauseButton = document.getElementById("playPauseButton");
+let audioDuration, audioPlayReference, audio, musicParts;
 
-audio.addEventListener("loadedmetadata", function () {
-  audioDuration = audio.duration;
-  musicTimeRange.max = audioDuration;
-});
+let initialTime = 0;
+let finishedTime = 0;
+let currentTime = 0;
+
+function audioControlsSetup(musicDirection, audioArray) {
+  audio = new Audio(musicDirection);
+  audio.addEventListener("loadedmetadata", function () {
+    audioDuration = audio.duration;
+    musicTimeRange.max = audioDuration;
+  });
+
+  musicParts = audioArray;
+}
 
 function playMusicButton() {
   playPauseButton.innerHTML = loadIcon;
@@ -30,11 +39,9 @@ function playMusicButton() {
 }
 
 function playMusic() {
-  kick.start().seek(currentTime);
-  drums.start().seek(currentTime);
-  hihats.start().seek(currentTime);
-  ambient.start().seek(currentTime);
-  ambient2.start().seek(currentTime);
+  musicParts.forEach((musicPart) => {
+    musicPart.start().seek(currentTime);
+  });
 
   initialTime = Tone.now();
   playPauseButton.innerHTML = pauseIcon;
@@ -42,11 +49,10 @@ function playMusic() {
 }
 
 function pauseMusic() {
-  kick.stop();
-  drums.stop();
-  hihats.stop();
-  ambient.stop();
-  ambient2.stop();
+  musicParts.forEach((musicPart) => {
+    musicPart.stop();
+  });
+
   finishedTime = Tone.immediate();
   currentTime += finishedTime - initialTime;
   playPauseButton.innerHTML = playIcon;
@@ -55,11 +61,9 @@ function pauseMusic() {
 
 function stopMusic() {
   Tone.loaded().then(() => {
-    kick.stop();
-    drums.stop();
-    hihats.stop();
-    ambient.stop();
-    ambient2.stop();
+    musicParts.forEach((musicPart) => {
+      musicPart.stop();
+    });
     currentTime = 0;
     initialTime = 0;
     finishedTime = 0;

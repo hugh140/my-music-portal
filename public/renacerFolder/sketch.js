@@ -11,18 +11,22 @@ let drums, drumsVolume;
 let points = [];
 let curves = [];
 
-let initialTime = 0;
-let finishedTime = 0;
-let currentTime = 0;
-
-const playPauseButton = document.getElementById("playPauseButton");
-
 function preload() {
-  kick = new Tone.Player("assets/kickRenacer.mp3").toDestination();
-  drums = new Tone.Player("assets/drumsRenacer.mp3").toDestination();
-  hihats = new Tone.Player("assets/hihatsRenacer.mp3").toDestination();
-  ambient = new Tone.Player("assets/ambientRenacer.mp3").toDestination();
-  ambient2 = new Tone.Player("assets/ambient2Renacer.mp3").toDestination();
+  kick = new Tone.Player(
+    "renacerFolder/assets/kickRenacer.mp3"
+  ).toDestination();
+  drums = new Tone.Player(
+    "renacerFolder/assets/drumsRenacer.mp3"
+  ).toDestination();
+  hihats = new Tone.Player(
+    "renacerFolder/assets/hihatsRenacer.mp3"
+  ).toDestination();
+  ambient = new Tone.Player(
+    "renacerFolder/assets/ambientRenacer.mp3"
+  ).toDestination();
+  ambient2 = new Tone.Player(
+    "renacerFolder/assets/ambient2Renacer.mp3"
+  ).toDestination();
 
   kick.fadeOut = 0.1;
   drums.fadeOut = 0.1;
@@ -42,6 +46,14 @@ function setup() {
 
   for (let i = 0; i < 4; i++) points.push(new Point());
   for (let i = 0; i < 10; i++) curves.push(new Curve());
+
+  audioControlsSetup("renacerFolder/assets/drumsRenacer.mp3", [
+    kick,
+    drums,
+    hihats,
+    ambient,
+    ambient2,
+  ]);
 
   Tone.loaded().then(() => {
     //Volume meters
