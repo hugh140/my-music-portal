@@ -53,7 +53,7 @@ class Curve {
   draw(ambient2Level) {
     ambient2Level *= random(0.1, 20);
     fill(ambient2Level, ambient2Level, ambient2Level, 100);
-    strokeWeight(ambient2Level && ambient2Level > - 10 ? 1 : 0);
+    strokeWeight(ambient2Level && ambient2Level > -10 ? 1 : 0);
 
     bezier(
       -200,

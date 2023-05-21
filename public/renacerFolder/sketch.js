@@ -80,7 +80,9 @@ function draw() {
     ? ambient2Volume.getValue() + 15
     : 0;
 
-  background(ambientLevel);
+  if (ambientLevel > -50)
+    background((kickLevel > 0.5 ? kickLevel : 0) * 25);
+  else background(kickLevel * 100);
 
   drawCurves(ambient2Level);
   drawCircun();
