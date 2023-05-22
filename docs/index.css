@@ -1,3 +1,7 @@
+body {
+  background-color: var(--background-color);
+}
+
 main {
   display: flex;
   justify-content: center;
@@ -39,7 +43,7 @@ button svg {
   -webkit-appearance: none;
   width: 100%;
   height: 25px;
-  background: #ffffff;
+  background: var(--audiocontrol-background);
   outline: none;
   margin: 0;
   padding: 0;
@@ -50,7 +54,7 @@ button svg {
   appearance: none;
   width: 25px;
   height: 25px;
-  background: #303030;
+  background: var(--audiocontrol-bar);
   cursor: pointer;
 }
 
@@ -59,8 +63,8 @@ button svg {
   width: 50px;
   height: 25px;
   margin: 0;
-  color: black;
-  background-color: white;
+  color: var(--timeindicator-text);
+  background-color: var(--timeindicator-background);
   text-align: center;
   line-height: 150%;
   font-family: Arial, Helvetica, sans-serif;
