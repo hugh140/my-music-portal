@@ -35,7 +35,8 @@ function EmailForm() {
           required
         ></textarea>
         <button
-          className="mt-1 w-full rounded-md bg-neutral-700 p-3 md:w-auto"
+          className="mt-1 w-full rounded-md bg-neutral-700 p-3 md:w-auto hover:bg-white
+          hover:text-black"
           type="submit"
         >
           Enviar

@@ -1,9 +1,9 @@
-import NavBar from "./template/NavBar";
-import Footer from "./template/Footer";
-import Headline from "./components/Headline";
-import BlogRecents from "./components/BlogRecents";
-import MusicRecents from "./components/MusicRecents";
-import LiveAnimations from "./components/LiveAnimations";
+import NavBar from "./components/template/NavBar";
+import Footer from "./components/template/Footer";
+import Headline from "./components/indexPage/Headline";
+import BlogRecents from "./components/indexPage/BlogRecents";
+import MusicRecents from "./components/indexPage/MusicRecents";
+import LiveAnimations from "./components/indexPage/LiveAnimations";
 
 import imgPortada from "./assets/portada.png";
 
@@ -14,7 +14,7 @@ function App() {
         <header className="relative mt-5">
           <img className="mx-auto" width={200} src={imgPortada} alt="" />
         </header>
-        <hr className="border-2 border-neutral-400" />
+        <hr className="border-2 border-neutral-400" />z
 
         <article className="flex flex-wrap">
           <NavBar>
