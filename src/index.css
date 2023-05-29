@@ -5,26 +5,45 @@
 html {
   scroll-behavior: smooth;
 }
-
 body {
   color: rgb(58, 58, 58)
 }
-
 #headline:hover #black-bg {
   opacity: 0.4;
 }
-
 .menu-on {
   display: block;
 }
 .menu-off {
   display: none;
 }
-
+.underline-fuchsia {
+  text-decoration-color: #e879f9;
+}
+.underline-fuchsia:hover {
+  color: #e879f9;
+}
+.underline-red {
+  text-decoration-color: #f87171;
+}
+.underline-red:hover {
+  color: #f87171;
+}
+.underline-purple {
+  text-decoration-color: #c084fc;
+}
+.underline-purple:hover {
+  color: #c084fc;
+}
+.underline-blue {
+  text-decoration-color: #60a5fa;
+}
+.underline-blue:hover {
+  color: #60a5fa;
+}
 .rotate-on {
   transform: translateY(-50%) rotate(0deg);
 }
-
 .rotate-off {
   transform: translateY(-50%) rotate(180deg);
 }
