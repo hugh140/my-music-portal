@@ -1,14 +1,63 @@
-function NavBar({ options }) {
+import PropTypes from "prop-types";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { useState, useRef } from "react";
+
+function NavBar({ children }) {
+  const [toggle, setToggle] = useState(false);
+  const menuIcon = useRef()
+  const menuOptions = useRef()
+
+  function handleClickMenu() {
+    setToggle(!toggle);
+
+    if (toggle) {
+      menuIcon.current.classList.remove("rotate-off");
+      menuIcon.current.classList.add("rotate-on");
+      menuOptions.current.classList.remove("menu-on");
+      menuOptions.current.classList.add("menu-off");
+    } else {
+      menuIcon.current.classList.remove("rotate-on");
+      menuIcon.current.classList.add("rotate-off");
+      menuOptions.current.classList.remove("menu-off");
+      menuOptions.current.classList.add("menu-on");
+    }
+  }
+
   return (
-    <ul className="md:w-auto text-center w-full">
-      {options.map((option) => (
-        <a href="#" key={option}>
-          <li className="py-3 px-10 font-semibold duration-75 hover:text-white hover:bg-neutral-800 border-neutral-200 border-b-2">
-            {option}
-          </li>
-        </a>
-      ))}
-    </ul>
+    <nav className="w-full text-center md:w-auto">
+      <button
+        className="relative h-10 w-full bg-neutral-400 px-10 text-white hover:bg-neutral-600
+        block md:hidden active:bg-black"
+        onClick={handleClickMenu}
+      >
+        Menú
+        <FontAwesomeIcon
+          ref={menuIcon}
+          className="absolute end-4 top-1/2 -translate-y-1/2 text-xl"
+          icon={faCaretDown}
+        />
+      </button>
+      <ul className="hidden md:block" ref={menuOptions}>
+        {children.map((option) => (
+          <a href={option.link} key={option.text}>
+            <li
+              className="border-b-2 border-neutral-200 px-10 py-3 font-semibold 
+            duration-75 hover:bg-neutral-800 hover:text-white 
+            active:bg-white active:text-black lg:px-20"
+            >
+              {option.text}
+            </li>
+          </a>
+        ))}
+      </ul>
+    </nav>
   );
 }
+
+NavBar.propTypes = {
+  children: PropTypes.array,
+};
+
 export default NavBar;

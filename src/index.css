@@ -2,8 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Rokkitt:wght@500&display=swap');
+html {
+  scroll-behavior: smooth;
+}
 
-#artist-name {
-  font-family: 'Rokkitt', serif;
+body {
+  color: rgb(58, 58, 58)
+}
+
+#headline:hover #black-bg {
+  opacity: 0.4;
+}
+
+.menu-on {
+  display: block;
+}
+.menu-off {
+  display: none;
+}
+
+.rotate-on {
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.rotate-off {
+  transform: translateY(-50%) rotate(180deg);
 }
