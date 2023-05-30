@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
 
-function NavBar({ children }) {
+import navbarOptions from "../../utilities/navbarOptions";
+
+function NavBar() {
   const [toggle, setToggle] = useState(false);
   const menuIcon = useRef()
   const menuOptions = useRef()
@@ -40,7 +42,7 @@ function NavBar({ children }) {
         />
       </button>
       <ul className="hidden md:block" ref={menuOptions}>
-        {children.map((option) => (
+        {navbarOptions.map((option) => (
           <a href={option.link} key={option.text}>
             <li
               className="border-b-2 border-neutral-200 px-10 py-3 font-semibold 

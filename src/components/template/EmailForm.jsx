@@ -3,10 +3,20 @@ function EmailForm() {
     event.target.setCustomValidity(message);
   }
 
+  function sendEmail(event) {
+    event.preventDefault()
+
+    const name = event.target[0].value
+    const email = event.target[1].value
+    const content = event.target[2].value
+    window.open(`mailto:${email}?subject=${name}&body=${content}`);
+  }
+
   return (
     <article className="mb-5">
-      <h2 className="my-3 text-xl">Correo:</h2>
-      <form>
+      <h2 className="text-xl">¡Suscríbete, es gratis!</h2>
+      <p className="mb-3">Así podrás enterarte de las últimas publicaciones por correo.</p>
+      <form onSubmit={sendEmail}>
         <label className="mb-1 block" htmlFor="nombre">
           Nombre:
         </label>
@@ -31,7 +41,7 @@ function EmailForm() {
           Correo electrónico:
         </label>
         <input
-          className="w-full rounded-md border-2 border-neutral-800 px-2 py-1 text-black
+          className="w-full rounded-md border-2 border-neutral-800 px-2 py-2 text-black
           invalid:text-red-500"
           placeholder="xyz123@foo.com"
           type="email"
@@ -46,33 +56,12 @@ function EmailForm() {
           onInput={(event) => setInvalidMessage("", event)}
           required
         />
-        <label className="my-1 block" htmlFor="contenido">
-          Contenido:
-        </label>
-        <textarea
-          className="w-full rounded-md border-2 border-neutral-800 px-2 py-1 text-black
-          invalid:text-red-500"
-          name="contenido"
-          id="contenido"
-          cols="30"
-          rows="5"
-          minLength={20}
-          maxLength={1000}
-          onInvalid={(event) =>
-            setInvalidMessage(
-              "El rango de caracteres es de 20 a 1000.",
-              event
-            )
-          }
-          onInput={(event) => setInvalidMessage("", event)}
-          required
-        ></textarea>
         <button
-          className="mt-1 w-full rounded-md bg-neutral-700 p-3 hover:bg-white hover:text-black
+          className="mt-3 w-full rounded-md bg-neutral-700 p-3 hover:bg-white hover:text-black
           md:w-auto"
           type="submit"
         >
-          Enviar
+          Suscribirse
         </button>
       </form>
     </article>

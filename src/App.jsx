@@ -14,18 +14,10 @@ function App() {
         <header className="relative mt-5">
           <img className="mx-auto" width={200} src={imgPortada} alt="" />
         </header>
-        <hr className="border-2 border-neutral-400" />z
+        <hr className="border-2 border-neutral-400" />
 
         <article className="flex flex-wrap">
-          <NavBar>
-            {[
-              { text: "Inicio", link: "#" },
-              { text: "Recientes", link: "#blog" },
-              { text: "Mi música", link: "#music" },
-              { text: "Live Animations", link: "#" },
-              { text: "Contacto", link: "#" },
-            ]}
-          </NavBar>
+          <NavBar />
 
           <section className="w-2/4 flex-1">
             <Headline />
@@ -42,7 +34,7 @@ function App() {
 
             <LiveAnimations />
 
-            <div className="mx-auto h-8 w-4" />
+            <div className="mx-auto h-16 w-4" />
           </section>
         </article>
       </main>
