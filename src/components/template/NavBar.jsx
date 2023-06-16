@@ -1,15 +1,14 @@
-import PropTypes from "prop-types";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 
 import navbarOptions from "../../utilities/navbarOptions";
 
 function NavBar() {
   const [toggle, setToggle] = useState(false);
-  const menuIcon = useRef()
-  const menuOptions = useRef()
+  const menuIcon = useRef();
+  const menuOptions = useRef();
 
   function handleClickMenu() {
     setToggle(!toggle);
@@ -30,8 +29,8 @@ function NavBar() {
   return (
     <nav className="w-full text-center md:w-auto">
       <button
-        className="relative h-10 w-full bg-neutral-400 px-10 text-white hover:bg-neutral-600
-        block md:hidden active:bg-black"
+        className="relative block h-10 w-full bg-neutral-400 px-10 text-white
+        hover:bg-neutral-600 active:bg-black md:hidden"
         onClick={handleClickMenu}
       >
         Menú
@@ -43,7 +42,7 @@ function NavBar() {
       </button>
       <ul className="hidden md:block" ref={menuOptions}>
         {navbarOptions.map((option) => (
-          <a href={option.link} key={option.text}>
+          <Link to={option.link} key={option.text}>
             <li
               className="border-b-2 border-neutral-200 px-10 py-3 font-semibold 
             duration-75 hover:bg-neutral-800 hover:text-white 
@@ -51,15 +50,11 @@ function NavBar() {
             >
               {option.text}
             </li>
-          </a>
+          </Link>
         ))}
       </ul>
     </nav>
   );
 }
-
-NavBar.propTypes = {
-  children: PropTypes.array,
-};
 
 export default NavBar;

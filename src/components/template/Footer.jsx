@@ -23,7 +23,6 @@ function Footer() {
             </a>
           ))}
         </ul>
-        <h2 className="mb-5 text-center text-2xl font-bold">Contáctame</h2>
         <section className="grid grid-cols-none md:grid-cols-2">
           <article className="mb-10">
             <h2 className="my-3 text-xl">¡Sígueme en mis redes!</h2>
