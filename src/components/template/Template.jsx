@@ -26,5 +26,5 @@ function Template({ children }) {
 export default Template;
 
 Template.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.element,
 };
