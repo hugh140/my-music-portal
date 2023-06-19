@@ -6,6 +6,10 @@ const blogSchema = new Schema(
       type: String,
       required: true,
     },
+    headerImg: {
+      type: String,
+      required: true,
+    },
     blogContent: {
       type: Array,
       required: true,

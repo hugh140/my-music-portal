@@ -1,14 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const blogRoutes = require("./routes/blog");
 require("dotenv").config();
+
+const blogRoutes = require("./routes/blog");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static("public"));
+
 app.use("/api", blogRoutes);
-app.use(express.static('public'));
 
 mongoose
   .connect(process.env.MONGODB_URI)

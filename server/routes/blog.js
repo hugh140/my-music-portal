@@ -1,7 +1,8 @@
 const express = require("express");
-const router = express.Router();
-
 const Blog = require("../models/blog");
+const saveImgBinaries = require("../scripts/saveImgBinaries");
+
+const router = express.Router();
 const limitOfBlogs = 30;
 
 //Error message function
@@ -51,11 +52,24 @@ router.get("/blog/:id", (req, res) => {
 router.post("/blog", (req, res) => {
   try {
     const blog = req.body;
-    const newBlog = new Blog({
-      title: blog.title,
-      blogContent: blog.content,
+
+    // Save images
+    blog.headerImg = saveImgBinaries(blog.headerImg);
+    blog.blogContent.forEach((element, index) => {
+      if (element.type !== "image") return;
+
+      const imgDir = saveImgBinaries(element.content);
+      blog.blogContent[index].content = imgDir;
     });
 
+    // Create model
+    const newBlog = new Blog({
+      title: blog.title,
+      headerImg: blog.headerImg,
+      blogContent: blog.blogContent,
+    });
+
+    // Save model
     newBlog
       .save()
       .then(() => {
