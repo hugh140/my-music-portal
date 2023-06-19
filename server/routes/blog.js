@@ -1,25 +1,48 @@
 const express = require("express");
 const Blog = require("../models/blog");
-const saveImgBinaries = require("../scripts/saveImgBinaries");
+const {
+  saveImgBinaries,
+  deleteImages,
+} = require("../scripts/manipulateImages");
 
 const router = express.Router();
 const limitOfBlogs = 30;
 
-//Error message function
+// Error message function
 function errorMessage(res, error) {
   console.error(error);
   res.send("Something went wrong.");
 }
 
-//Routers
+// Blogs img manipulate
+function saveBlogImgs(blog) {
+  blog.headerImg = saveImgBinaries(blog.headerImg);
+  blog.blogContent.forEach((element, index) => {
+    if (element.type !== "image") return;
+
+    const imgDir = saveImgBinaries(element.content);
+    blog.blogContent[index].content = imgDir;
+  });
+}
+
+function deleteBlogImgs(blog) {
+  deleteImages(blog.headerImg);
+  blog.blogContent.forEach((element) => {
+    if (element.type !== "image") return;
+    deleteImages(element.content);
+  });
+}
+
+// Routers
 router.get("/blogs/:limit", (req, res) => {
-  const { limit } = req.params;
   try {
+    const { limit } = req.params;
+
     if (limit > limitOfBlogs) throw new Error("The limit exceeds 30 blogs.");
 
     Blog.find()
       .limit(limit)
-      .select("title")
+      .select("title headerImg")
       .then((blogs) => {
         res.send(blogs);
         console.log(blogs);
@@ -52,15 +75,7 @@ router.get("/blog/:id", (req, res) => {
 router.post("/blog", (req, res) => {
   try {
     const blog = req.body;
-
-    // Save images
-    blog.headerImg = saveImgBinaries(blog.headerImg);
-    blog.blogContent.forEach((element, index) => {
-      if (element.type !== "image") return;
-
-      const imgDir = saveImgBinaries(element.content);
-      blog.blogContent[index].content = imgDir;
-    });
+    saveBlogImgs(blog);
 
     // Create model
     const newBlog = new Blog({
@@ -85,17 +100,21 @@ router.post("/blog", (req, res) => {
 });
 
 router.put("/blog/:id", (req, res) => {
-  const { id } = req.params;
-  const blog = req.body;
-
   try {
+    const { id } = req.params;
+    const blog = req.body;
+    saveBlogImgs(blog);
+
     const updateBlog = {
       title: blog.title,
-      blogContent: blog.content,
+      headerImg: blog.headerImg,
+      blogContent: blog.blogContent,
     };
 
-    Blog.updateOne({ _id: id }, updateBlog)
-      .then(() => {
+    Blog.findOneAndUpdate({ _id: id }, updateBlog)
+      .then((blog) => {
+        deleteBlogImgs(blog);
+
         console.log(updateBlog, "\n updated succesfully\n");
         res.send("Blog updated succesfully");
       })
@@ -108,11 +127,13 @@ router.put("/blog/:id", (req, res) => {
 });
 
 router.delete("/blog/:id", (req, res) => {
-  const { id } = req.params;
-
   try {
-    Blog.deleteOne({ _id: id })
-      .then(() => {
+    const { id } = req.params;
+
+    Blog.findOneAndDelete({ _id: id })
+      .then((blog) => {
+        deleteBlogImgs(blog);
+
         console.log("Blog deleted succesfully\n");
         res.send("Blog deleted succesfully");
       })

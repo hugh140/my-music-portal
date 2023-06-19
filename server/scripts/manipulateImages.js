@@ -1,4 +1,4 @@
-const { readdirSync, writeFileSync, existsSync } = require("fs");
+const { writeFileSync, existsSync, unlinkSync } = require("fs");
 
 const imagesDir = __dirname + "/../public/images/";
 
@@ -10,10 +10,13 @@ function saveImgBinaries(binaries) {
   const dirFile = `${imagesDir}/${fileName}.jpeg`;
   const imgBinaries = Buffer.from(binaries, "hex");
 
-  writeFileSync(dirFile, imgBinaries, (error) => {
-    if (error) console.error(error);
-  });
+  writeFileSync(dirFile, imgBinaries);
 
   return `${process.env.SERVER_URL}/images/${fileName}.jpeg`;
 }
-module.exports = saveImgBinaries;
+
+function deleteImages(imageURL) {
+  const fileName = imageURL.split("/").at(-1);
+  unlinkSync(imagesDir + fileName)
+}
+module.exports = { deleteImages, saveImgBinaries };
