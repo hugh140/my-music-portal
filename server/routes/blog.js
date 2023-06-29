@@ -9,9 +9,12 @@ const router = express.Router();
 const limitOfBlogs = 30;
 
 // Error message function
-function errorMessage(res, error) {
+function errorMessage(res, error, status) {
   console.error(error);
-  res.send("Something went wrong.");
+  res.status(status).json({
+    message: `Error: ${error}`,
+    status: status,
+  });
 }
 
 // Blogs img manipulate
@@ -35,114 +38,94 @@ function deleteBlogImgs(blog) {
 
 // Routers
 router.get("/blogs/:limit", (req, res) => {
-  try {
-    const { limit } = req.params;
+  const { limit } = req.params;
 
-    if (limit > limitOfBlogs) throw new Error("The limit exceeds 30 blogs.");
+  if (limit > limitOfBlogs) throw new Error();
 
-    Blog.find()
-      .limit(limit)
-      .select("title headerImg")
-      .then((blogs) => {
-        res.send(blogs);
-        console.log(blogs);
-      })
-      .catch((error) => {
-        errorMessage(res, error);
-      });
-  } catch (error) {
-    errorMessage(res, error);
-  }
+  Blog.find()
+    .limit(limit)
+    .select("title headerImg")
+    .then((blogs) => {
+      res.send(blogs);
+      console.log(blogs);
+    })
+    .catch((error) => {
+      errorMessage(res, error, 404);
+    });
 });
 
 router.get("/blog/:id", (req, res) => {
   const { id } = req.params;
 
-  try {
-    Blog.findById(id)
-      .then((blogs) => {
-        res.send(blogs);
-        console.log(blogs);
-      })
-      .catch((error) => {
-        errorMessage(res, error);
-      });
-  } catch (error) {
-    errorMessage(res, error);
-  }
+  Blog.findById(id)
+    .then((blogs) => {
+      res.send(blogs);
+      console.log(blogs);
+    })
+    .catch((error) => {
+      errorMessage(res, error, 404);
+    });
 });
 
 router.post("/blog", (req, res) => {
-  try {
-    const blog = req.body;
-    saveBlogImgs(blog);
+  const blog = req.body;
+  saveBlogImgs(blog);
 
-    // Create model
-    const newBlog = new Blog({
-      title: blog.title,
-      headerImg: blog.headerImg,
-      blogContent: blog.blogContent,
+  // Create model
+  const newBlog = new Blog({
+    title: blog.title,
+    headerImg: blog.headerImg,
+    blogContent: blog.blogContent,
+  });
+
+  // Save model
+  newBlog
+    .save()
+    .then(() => {
+      console.log(newBlog, "\n saved succesfully\n");
+      res.send("Blog saved succesfully");
+    })
+    .catch((error) => {
+      errorMessage(res, error, 400);
     });
-
-    // Save model
-    newBlog
-      .save()
-      .then(() => {
-        console.log(newBlog, "\n saved succesfully\n");
-        res.send("Blog saved succesfully");
-      })
-      .catch((error) => {
-        errorMessage(res, error);
-      });
-  } catch (error) {
-    errorMessage(res, error);
-  }
 });
 
 router.put("/blog/:id", (req, res) => {
-  try {
-    const { id } = req.params;
-    const blog = req.body;
-    saveBlogImgs(blog);
+  const { id } = req.params;
+  const blog = req.body;
+  saveBlogImgs(blog);
 
-    const updateBlog = {
-      title: blog.title,
-      headerImg: blog.headerImg,
-      blogContent: blog.blogContent,
-    };
+  const updateBlog = {
+    title: blog.title,
+    headerImg: blog.headerImg,
+    blogContent: blog.blogContent,
+  };
 
-    Blog.findOneAndUpdate({ _id: id }, updateBlog)
-      .then((blog) => {
-        deleteBlogImgs(blog);
+  Blog.findOneAndUpdate({ _id: id }, updateBlog)
+    .then((blog) => {
+      deleteBlogImgs(blog);
 
-        console.log(updateBlog, "\n updated succesfully\n");
-        res.send("Blog updated succesfully");
-      })
-      .catch((error) => {
-        errorMessage(res, error);
-      });
-  } catch (error) {
-    errorMessage(res, error);
-  }
+      console.log(updateBlog, "\n updated succesfully\n");
+      res.send("Blog updated succesfully");
+    })
+    .catch((error) => {
+      errorMessage(res, error, 400);
+    });
 });
 
 router.delete("/blog/:id", (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    Blog.findOneAndDelete({ _id: id })
-      .then((blog) => {
-        deleteBlogImgs(blog);
+  Blog.findOneAndDelete({ _id: id })
+    .then((blog) => {
+      deleteBlogImgs(blog);
 
-        console.log("Blog deleted succesfully\n");
-        res.send("Blog deleted succesfully");
-      })
-      .catch((error) => {
-        errorMessage(res, error);
-      });
-  } catch (error) {
-    errorMessage(res, error);
-  }
+      console.log("Blog deleted succesfully\n");
+      res.send("Blog deleted succesfully");
+    })
+    .catch((error) => {
+      errorMessage(res, error, 400);
+    });
 });
 
 module.exports = router;
