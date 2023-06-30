@@ -6,13 +6,13 @@ const {
 } = require("../scripts/manipulateImages");
 
 const router = express.Router();
-const limitOfBlogs = 30;
+const limitOfBlogs = 20;
 
 // Error message function
 function errorMessage(res, error, status) {
   console.error(error);
   res.status(status).json({
-    message: `Error: ${error}`,
+    message: `${error}`,
     status: status,
   });
 }
@@ -37,21 +37,30 @@ function deleteBlogImgs(blog) {
 }
 
 // Routers
-router.get("/blogs/:limit", (req, res) => {
-  const { limit } = req.params;
+router.get("/blogs", (req, res) => {
+  try {
+    let start = req.query.start;
+    let end = req.query.end;
 
-  if (limit > limitOfBlogs) throw new Error();
+    if (!start || !end) throw new Error("Blank attributes not permitted.");
 
-  Blog.find()
-    .limit(limit)
-    .select("title headerImg")
-    .then((blogs) => {
-      res.send(blogs);
-      console.log(blogs);
-    })
-    .catch((error) => {
-      errorMessage(res, error, 404);
-    });
+    if (start >= end || end - start > limitOfBlogs || start < 0 || end < 0)
+      throw new Error(`The blogs petition has not permitted range.`);
+
+    Blog.find()
+      .skip(start)
+      .limit(end)
+      .sort({ createdAt: "desc" })
+      .select("title headerImg")
+      .then((blogs) => {
+        res.json(blogs);
+      })
+      .catch((error) => {
+        errorMessage(res, error, 404);
+      });
+  } catch (error) {
+    errorMessage(res, error, 400);
+  }
 });
 
 router.get("/blog/:id", (req, res) => {
@@ -68,26 +77,30 @@ router.get("/blog/:id", (req, res) => {
 });
 
 router.post("/blog", (req, res) => {
-  const blog = req.body;
-  saveBlogImgs(blog);
+  try {
+    const blog = req.body;
+    if (!blog) throw new Error("The content is blank.");
 
-  // Create model
-  const newBlog = new Blog({
-    title: blog.title,
-    headerImg: blog.headerImg,
-    blogContent: blog.blogContent,
-  });
+    saveBlogImgs(blog);
 
-  // Save model
-  newBlog
-    .save()
-    .then(() => {
-      console.log(newBlog, "\n saved succesfully\n");
-      res.send("Blog saved succesfully");
-    })
-    .catch((error) => {
-      errorMessage(res, error, 400);
+    const newBlog = new Blog({
+      title: blog.title,
+      headerImg: blog.headerImg,
+      blogContent: blog.blogContent,
     });
+
+    newBlog
+      .save()
+      .then(() => {
+        console.log(newBlog, "\n saved succesfully\n");
+        res.send("Blog saved succesfully");
+      })
+      .catch((error) => {
+        errorMessage(res, error, 400);
+      });
+  } catch (error) {
+    errorMessage(res, error, 400);
+  }
 });
 
 router.put("/blog/:id", (req, res) => {
