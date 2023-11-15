@@ -104,8 +104,11 @@ router.post("/blog", (req, res) => {
 });
 
 router.put("/blog/:id", (req, res) => {
+  try {
   const { id } = req.params;
   const blog = req.body;
+  if (!blog) throw new Error("The content is blank.");
+
   saveBlogImgs(blog);
 
   const updateBlog = {
@@ -124,6 +127,9 @@ router.put("/blog/:id", (req, res) => {
     .catch((error) => {
       errorMessage(res, error, 400);
     });
+  } catch (error) {
+    errorMessage(res, error, 400);
+  }
 });
 
 router.delete("/blog/:id", (req, res) => {

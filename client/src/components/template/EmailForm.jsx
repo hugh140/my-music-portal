@@ -13,7 +13,7 @@ function EmailForm() {
   }
 
   return (
-    <article className="mb-5">
+    <article className="mb-5 mt-12">
       <h2 className="text-xl">¡Suscríbete, es gratis!</h2>
       <p className="mb-3">Así podrás enterarte de las últimas publicaciones por correo.</p>
       <form onSubmit={sendEmail}>

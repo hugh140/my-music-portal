@@ -8,7 +8,7 @@ function saveImgBinaries(binaries) {
   if (existsSync(imagesDir + fileName)) fileName++;
 
   const dirFile = `${imagesDir}/${fileName}.jpeg`;
-  const imgBinaries = Buffer.from(binaries, "hex");
+  const imgBinaries = Buffer.from(binaries, "base64");
 
   writeFileSync(dirFile, imgBinaries);
 

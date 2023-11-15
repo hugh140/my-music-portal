@@ -9,7 +9,7 @@ function Footer() {
     <footer className="bg-neutral-900">
       <main className="container mx-auto p-10 py-10 text-white">
         <ul
-          className="mb-10 grid grid-cols-none place-content-center text-center 
+          className="grid grid-cols-none place-content-center text-center 
           md:grid-cols-5"
         >
           {navbarOptions.map((option) => (
@@ -24,7 +24,7 @@ function Footer() {
           ))}
         </ul>
         <section className="grid grid-cols-none md:grid-cols-2">
-          <article className="mb-10">
+          <article className="mb-10 mt-10">
             <h2 className="my-3 text-xl">¡Sígueme en mis redes!</h2>
             <ul>
               {socialMediaLinks.map((socialMedia) => (

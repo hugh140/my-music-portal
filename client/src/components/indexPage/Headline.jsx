@@ -18,12 +18,6 @@ function Headline() {
           />
           <div className="bottom-10 md:absolute md:start-1/2 md:w-11/12 md:-translate-x-1/2 md:text-white">
             <h2 className="my-3 text-2xl font-bold">Lorem ipsum dolor sit.</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Omnis
-              aspernatur soluta neque nobis iusto quos est sunt autem culpa, rem
-              exercitationem expedita harum nesciunt aliquam? Modi dolor
-              repudiandae excepturi quam!
-            </p>
           </div>
         </div>
       </a>
