@@ -2,11 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .rotate-option {
+    @apply rotate-45;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
 body {
-  color: rgb(58, 58, 58)
+  color: rgb(58, 58, 58);
 }
 #headline:hover #black-bg {
   opacity: 0.4;
