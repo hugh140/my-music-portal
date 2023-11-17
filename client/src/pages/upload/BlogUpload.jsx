@@ -6,7 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 
-import TextSection from "../../components/uploadSections/TextSection";
+import Sections from "../../components/uploadSections/Sections";
 
 const ElementsContext = createContext();
 
@@ -17,9 +17,11 @@ function BlogUpload() {
 
   const handleButton = () => setButtonPressed(!buttonPressed);
 
-  function addTextSection() {
+  function addSection(type) {
     const el = [...elements];
-    el.push(<TextSection key={elements.length} index={elements.length} />);
+    el.push(
+      <Sections key={elements.length} index={elements.length} type={type} />
+    );
     setElements(el);
     setButtonPressed(false);
   }
@@ -36,7 +38,7 @@ function BlogUpload() {
             id="title"
             rows={1}
             placeholder="Escribe el título de tu blog."
-            className="mb-4 ms-4 w-[80%] rounded border-2 border-zinc-400 px-2"
+            className="mb-4 ms-4 w-[80%] rounded-md border-2 border-zinc-100 px-2"
           />
           <br />
           <input type="file" src="" alt="" />
@@ -49,7 +51,7 @@ function BlogUpload() {
         </form>
 
         <div className="relative mb-52">
-          <hr className="my-10 border-black" />
+          <hr className="my-10 border-zinc-400" />
           <div className="absolute -top-5 left-10 w-full">
             <button onClick={handleButton}>
               <FontAwesomeIcon
@@ -62,7 +64,7 @@ function BlogUpload() {
             </button>
           </div>
           <div className="absolute left-0 top-6 w-full">
-            <button onClick={addTextSection}>
+            <button onClick={() => addSection("Texto")}>
               <FontAwesomeIcon
                 icon={faFileLines}
                 style={{ opacity: buttonPressed ? 1 : 0 }}
@@ -72,7 +74,7 @@ function BlogUpload() {
             </button>
           </div>
           <div className="absolute left-20 top-6 w-full">
-            <button>
+            <button onClick={() => addSection("Imagen")}>
               <FontAwesomeIcon
                 icon={faImage}
                 style={{ opacity: buttonPressed ? 1 : 0 }}
