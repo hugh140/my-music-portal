@@ -32,7 +32,6 @@ function Sections({ index, type }) {
 
   return (
     <main key={index} className="mt-4">
-      {/* <hr className="mb-5 mt-10 border-zinc-200" /> */}
       <button onClick={deleteSection}>
         <FontAwesomeIcon
           icon={faTrash}

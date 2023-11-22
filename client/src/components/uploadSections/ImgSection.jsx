@@ -1,6 +1,6 @@
 function ImgSection() {
   return (
-    <input type="file" name="" id="" className="mt-4" />
+    <input type="file" name="img" className="mt-4" />
   )
 }
 export default ImgSection
