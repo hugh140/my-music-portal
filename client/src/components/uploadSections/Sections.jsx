@@ -3,8 +3,7 @@ import { ElementsContext } from "../../pages/upload/BlogUpload";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import TextSection from "./TextSection";
-import ImgSection from "./ImgSection";
+import { TextSection, ImgSection } from "./InputSections";
 
 function Sections({ index, type }) {
   const context = useContext(ElementsContext);
@@ -14,7 +13,7 @@ function Sections({ index, type }) {
       case "Texto":
         return <TextSection />;
       case "Imagen":
-        return <ImgSection />;
+        return <ImgSection name="img" />;
     }
   });
 
@@ -40,7 +39,7 @@ function Sections({ index, type }) {
         />
       </button>
       <label htmlFor="section" className="ms-4 text-xl font-bold">
-        {type}
+        {type}:
       </label>
       <br />
       {sectionContent}

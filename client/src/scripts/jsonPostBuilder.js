@@ -1,3 +1,5 @@
+import { toBase64Binaries } from "./fileProcessor";
+
 function jsonPostBuilder(evt) {
   return new Promise((resolve) => {
     evt.preventDefault();
@@ -49,10 +51,3 @@ function jsonPostBuilder(evt) {
 }
 
 export default jsonPostBuilder;
-
-async function toBase64Binaries(file, callback) {
-  const fileReader = new FileReader();
-  fileReader.onload = () => callback(btoa(fileReader.result));
-  fileReader.onerror = (err) => callback(err);
-  fileReader.readAsBinaryString(file);
-}

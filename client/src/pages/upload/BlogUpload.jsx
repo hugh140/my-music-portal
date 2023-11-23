@@ -8,6 +8,7 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 
 import Sections from "../../components/uploadSections/Sections";
 import jsonPostBuilder from "../../scripts/jsonPostBuilder";
+import { ImgSection } from "../../components/uploadSections/InputSections";
 
 const ElementsContext = createContext();
 
@@ -29,8 +30,7 @@ function BlogUpload() {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
-    const buildedJson = await jsonPostBuilder(evt)
-    console.log(buildedJson)
+    const buildedJson = await jsonPostBuilder(evt);
   }
 
   return (
@@ -51,7 +51,7 @@ function BlogUpload() {
           <br />
           <label className="mb-5 text-xl font-bold">Portada:</label>
           <br />
-          <input type="file" name="header" />
+          <ImgSection name="header" />
 
           <ElementsContext.Provider
             value={{ elements, setElements, lastDeleted, setLastDeleted }}
