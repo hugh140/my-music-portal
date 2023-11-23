@@ -37,7 +37,6 @@ function ImgSection({ name }) {
 function TextSection() {
   return (
     <textarea
-      id="section"
       rows="5"
       placeholder="..."
       name="text"

@@ -45,7 +45,7 @@ function jsonPostBuilder(evt) {
             break;
         }
       }
-      resolve(buildedJson);
+      resolve(JSON.stringify(buildedJson));
     }, 50 * imgFiles.length);
   });
 }

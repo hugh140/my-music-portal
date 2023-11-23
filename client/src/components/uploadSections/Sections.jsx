@@ -30,7 +30,7 @@ function Sections({ index, type }) {
   }, [context.lastDeleted, realIndex]);
 
   return (
-    <main key={index} className="mt-4">
+    <main key={index} className="mt-8">
       <button onClick={deleteSection}>
         <FontAwesomeIcon
           icon={faTrash}
