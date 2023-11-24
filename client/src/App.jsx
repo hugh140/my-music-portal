@@ -4,6 +4,7 @@ import MainPage from "./pages/MainPage";
 import BlogPage from "./pages/BlogPage";
 import UploadPage from "./pages/upload/UploadPage";
 import { BlogUpload } from "./pages/upload/BlogUpload";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/blog-example" element={<BlogPage />} />
         <Route path="/upload" element={<UploadPage />} />
         <Route path="/upload/blog" element={<BlogUpload />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

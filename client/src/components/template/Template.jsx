@@ -8,7 +8,7 @@ import imgPortada from "../../assets/portada.png";
 function Template({ children, footer, navbar }) {
   return (
     <>
-      <main className="container mx-auto">
+      <main className="container mx-auto h-screen">
         <header className="relative mt-5">
           <img className="mx-auto" width={200} src={imgPortada} alt="" />
         </header>
@@ -20,7 +20,7 @@ function Template({ children, footer, navbar }) {
             <section className="w-2/4 flex-1">{children}</section>
           </article>
         ) : (
-          <section>{children}</section>
+          <section className="h-3/5">{children}</section>
         )}
       </main>
       {footer && <Footer footer={footer} />}

@@ -1,5 +1,6 @@
 const express = require("express");
 const Blog = require("../models/blog");
+const errorMessage = require("../scripts/errorHandler");
 const {
   saveImgBinaries,
   deleteImages,
@@ -7,15 +8,6 @@ const {
 
 const router = express.Router();
 const limitOfBlogs = 20;
-
-// Error message function
-function errorMessage(res, error, status) {
-  console.error(error);
-  res.status(status).json({
-    message: `${error}`,
-    status: status,
-  });
-}
 
 // Blogs img manipulate
 function saveBlogImgs(blog) {
@@ -105,28 +97,28 @@ router.post("/blog", (req, res) => {
 
 router.put("/blog/:id", (req, res) => {
   try {
-  const { id } = req.params;
-  const blog = req.body;
-  if (!blog) throw new Error("The content is blank.");
+    const { id } = req.params;
+    const blog = req.body;
+    if (!blog) throw new Error("The content is blank.");
 
-  saveBlogImgs(blog);
+    saveBlogImgs(blog);
 
-  const updateBlog = {
-    title: blog.title,
-    headerImg: blog.headerImg,
-    blogContent: blog.blogContent,
-  };
+    const updateBlog = {
+      title: blog.title,
+      headerImg: blog.headerImg,
+      blogContent: blog.blogContent,
+    };
 
-  Blog.findOneAndUpdate({ _id: id }, updateBlog)
-    .then((blog) => {
-      deleteBlogImgs(blog);
+    Blog.findOneAndUpdate({ _id: id }, updateBlog)
+      .then((blog) => {
+        deleteBlogImgs(blog);
 
-      console.log(updateBlog, "\n updated succesfully\n");
-      res.send("Blog updated succesfully");
-    })
-    .catch((error) => {
-      errorMessage(res, error, 400);
-    });
+        console.log(updateBlog, "\n updated succesfully\n");
+        res.send("Blog updated succesfully");
+      })
+      .catch((error) => {
+        errorMessage(res, error, 400);
+      });
   } catch (error) {
     errorMessage(res, error, 400);
   }
