@@ -6,16 +6,18 @@ import { ImgSection } from "../../components/uploadSections/InputSections";
 import OptionsBar from "../../components/uploadSections/optionsBar";
 
 import jsonPostBuilder from "../../scripts/jsonPostBuilder";
+import { useNavigate } from "react-router-dom";
 
 const ElementsContext = createContext();
 
 function BlogUpload() {
   const [elements, setElements] = useState([]);
   const [lastDeleted, setLastDeleted] = useState(Infinity);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!document.cookie) window.location.href = "/login";
-  }, []);
+    if (!document.cookie) navigate("/login?redirect=/adminPanel/upload/blog");
+  }, [navigate]);
 
   function addSection(type, index) {
     const el = [...elements];

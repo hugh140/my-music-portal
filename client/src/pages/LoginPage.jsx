@@ -30,7 +30,9 @@ function LoginPage() {
         }
       );
       response = await response.json();
-      if (response.ok) window.location.href = "/adminPanel";
+      const searchParams = new URLSearchParams(window.location.search);
+      if (response.ok)
+        window.location.href = searchParams.get("redirect") || "/adminPanel";
       else throw new Error("El correo o contraseña son incorrectos.");
       setLoader(false);
     } catch (e) {

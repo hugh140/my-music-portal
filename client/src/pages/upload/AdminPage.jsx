@@ -5,7 +5,7 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import Template from "../../components/template/template";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const buttonOptions = [
   { name: "Blog", link: "/adminPanel/upload/blog" },
@@ -14,10 +14,11 @@ const buttonOptions = [
 
 function AdminPage() {
   const [modal, setModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!document.cookie) window.location.href = "/login";
-  }, []);
+    if (!document.cookie) navigate("/login?redirect=/adminPage");
+  }, [navigate]);
 
   return (
     <>
