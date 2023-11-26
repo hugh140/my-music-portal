@@ -14,6 +14,10 @@ const blogSchema = new Schema(
       type: Array,
       required: true,
     },
+    author: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,

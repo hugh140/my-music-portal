@@ -1,6 +1,7 @@
 const express = require("express");
 const Blog = require("../models/blog");
 const errorMessage = require("../scripts/errorHandler");
+const jwt = require("jsonwebtoken");
 const {
   saveImgBinaries,
   deleteImages,
@@ -71,7 +72,10 @@ router.get("/blog/:id", (req, res) => {
 router.post("/blog", (req, res) => {
   try {
     const blog = req.body;
+    const token = req.cookies.HR;
     if (!blog) throw new Error("The content is blank.");
+
+    const userName = jwt.verify(token, process.env.SECRET).name;
 
     saveBlogImgs(blog);
 
@@ -79,6 +83,7 @@ router.post("/blog", (req, res) => {
       title: blog.title,
       headerImg: blog.headerImg,
       blogContent: blog.blogContent,
+      author: userName,
     });
 
     newBlog

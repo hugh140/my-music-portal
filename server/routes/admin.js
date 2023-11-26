@@ -11,10 +11,13 @@ router.post("/register", async (req, res) => {
     const name = req.query.name;
     const email = req.query.email;
     const password = req.query.password;
+    const token = req.cookies.HR;
 
     if (!name) throw new Error('El campo "name" está vacío.');
     if (!email) throw new Error('El campo "email" está vacío.');
     if (!password) throw new Error('El campo "password" está vacío.');
+
+    jwt.verify(token, process.env.SECRET);
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
@@ -25,12 +28,8 @@ router.post("/register", async (req, res) => {
       password: hash,
     });
 
-    try {
-      await newAdmin.save();
-      res.send("Nuevo usuario registrado correctamente.");
-    } catch (error) {
-      errorMessage(res, error, 400);
-    }
+    await newAdmin.save();
+    res.send("Nuevo usuario registrado correctamente.");
   } catch (error) {
     errorMessage(res, error, 400);
   }
@@ -50,8 +49,12 @@ router.post("/login", async (req, res) => {
         expiresIn: "1h",
       });
       res.cookie("HR", token);
-      res.send("Ha iniciado sesión correctamente.");
-    } else res.send("Su email o contraseña son incorrectos.");
+      res.json({ message: "Ha iniciado sesión correctamente.", ok: true });
+    } else
+      res.send({
+        message: "Su email o contraseña son incorrectos.",
+        ok: false,
+      });
   } catch (error) {
     errorMessage(res, error, 400);
   }

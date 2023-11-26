@@ -3,14 +3,18 @@ import Template from "../components/template/template";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function LoginPage() {
   const [showPass, setShowPass] = useState(false);
+  const [alert, setAlert] = useState(null);
+  const [loader, setLoader] = useState(false);
 
   const handleShowPass = () => setShowPass(!showPass);
 
   async function logUser(evt) {
     evt.preventDefault();
+    setLoader(true);
     const formData = new FormData(evt.target);
 
     const email = formData.get("email");
@@ -25,10 +29,14 @@ function LoginPage() {
           credentials: "include",
         }
       );
-      response = await response.text();
-      console.log(response);
+      response = await response.json();
+      if (response.ok) window.location.href = "/adminPanel";
+      else throw new Error("El correo o contraseña son incorrectos.");
+      setLoader(false);
     } catch (e) {
-      console.log(e);
+      setAlert(String(e));
+      setLoader(false);
+      setTimeout(() => setAlert(null), 3000);
     }
   }
 
@@ -48,6 +56,7 @@ function LoginPage() {
               id="email"
               className="mb-4 mt-1 w-full rounded border-2 border-zinc-500 p-1"
               placeholder="xyz@123.com"
+              required
             />
             <br />
             <label htmlFor="pass">Contraseña:</label>
@@ -58,6 +67,7 @@ function LoginPage() {
                 name="pass"
                 id="pass"
                 className="mb-4 mt-1 w-full rounded border-2 border-zinc-500 p-1"
+                required
               />
               <span
                 className="cursor-pointer p-2 hover:text-blue-500"
@@ -66,13 +76,26 @@ function LoginPage() {
                 <FontAwesomeIcon icon={showPass ? faEye : faEyeSlash} />
               </span>
             </div>
-            <input
+            <button
               type="submit"
-              value="Iniciar Sesión"
               className="w-full rounded border-2 border-black bg-zinc-600 p-2 text-white
               hover:bg-zinc-700 active:bg-white active:text-black"
-            />
+            >
+              {loader ? (
+                <FontAwesomeIcon icon={faSpinner} spin={true} />
+              ) : (
+                "Iniciar Sesión"
+              )}
+            </button>
           </form>
+          {alert && (
+            <div
+              className="fixed bottom-5 right-5 rounded border-2 border-red-600 bg-red-500
+              p-3 text-white"
+            >
+              {alert}
+            </div>
+          )}
         </div>
       </div>
     </Template>

@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 
 import Template from "../../components/template/template";
 import Sections from "../../components/uploadSections/Sections";
@@ -13,6 +13,10 @@ function BlogUpload() {
   const [elements, setElements] = useState([]);
   const [lastDeleted, setLastDeleted] = useState(Infinity);
 
+  useEffect(() => {
+    if (!document.cookie) window.location.href = "/login";
+  }, []);
+
   function addSection(type, index) {
     const el = [...elements];
     el.splice(
@@ -26,7 +30,16 @@ function BlogUpload() {
   async function handleSubmit(evt) {
     evt.preventDefault();
     const buildedJson = await jsonPostBuilder(evt);
-    console.log(buildedJson);
+    let postConfirm = await fetch("http://localhost:3000/api/blog", {
+      method: "POST",
+      body: buildedJson,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    postConfirm = await postConfirm.text();
+    console.log(postConfirm);
   }
 
   return (
