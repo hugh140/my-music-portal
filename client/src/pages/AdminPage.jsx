@@ -4,7 +4,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import Template from "../../components/template/template";
+import Template from "../components/template/template";
 import { Link, useNavigate } from "react-router-dom";
 
 const buttonOptions = [

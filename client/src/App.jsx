@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainPage from "./pages/MainPage";
 import BlogPage from "./pages/BlogPage";
-import AdminPage from "./pages/upload/AdminPage";
-import { BlogUpload } from "./pages/upload/BlogUpload";
+import AdminPage from "./pages/AdminPage";
+import { BlogUpload } from "./pages/BlogUpload";
 import LoginPage from "./pages/LoginPage";
 
 function App() {

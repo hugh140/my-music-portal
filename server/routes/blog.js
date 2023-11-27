@@ -90,7 +90,7 @@ router.post("/blog", (req, res) => {
       .save()
       .then(() => {
         console.log(newBlog, "\n saved succesfully\n");
-        res.send("Blog saved succesfully");
+        res.json({ message: "Blog saved succesfully", ok: true });
       })
       .catch((error) => {
         errorMessage(res, error, 400);

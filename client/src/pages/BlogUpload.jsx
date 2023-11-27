@@ -1,11 +1,14 @@
 import { useState, useEffect, createContext } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import Template from "../../components/template/template";
-import Sections from "../../components/uploadSections/Sections";
-import { ImgSection } from "../../components/uploadSections/InputSections";
-import OptionsBar from "../../components/uploadSections/optionsBar";
+import Template from "../components/template/template";
+import Sections from "../components/uploadSections/Sections";
+import { ImgSection } from "../components/uploadSections/InputSections";
+import OptionsBar from "../components/uploadSections/optionsBar";
 
-import jsonPostBuilder from "../../scripts/jsonPostBuilder";
+import jsonPostBuilder from "../scripts/jsonPostBuilder";
 import { useNavigate } from "react-router-dom";
 
 const ElementsContext = createContext();
@@ -13,6 +16,7 @@ const ElementsContext = createContext();
 function BlogUpload() {
   const [elements, setElements] = useState([]);
   const [lastDeleted, setLastDeleted] = useState(Infinity);
+  const [alert, setAlert] = useState({ render: false, ok: false });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,17 +35,29 @@ function BlogUpload() {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
-    const buildedJson = await jsonPostBuilder(evt);
-    let postConfirm = await fetch("http://localhost:3000/api/blog", {
-      method: "POST",
-      body: buildedJson,
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    postConfirm = await postConfirm.text();
-    console.log(postConfirm);
+    try {
+      const buildedJson = await jsonPostBuilder(evt);
+      let response = await fetch("http://localhost:3000/api/blog", {
+        method: "POST",
+        body: buildedJson,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      response = await response.json();
+      if (response.ok === true) {
+        setAlert({ render: true, ok: true });
+        setTimeout(() => {
+          window.location.href = "/adminPanel";
+        }, 1000);
+      } else throw new Error(response.message);
+    } catch (e) {
+      setAlert({ render: true, ok: false, message: e });
+      setTimeout(() => {
+        setAlert({ render: false, ok: false });
+      }, 3000);
+    }
   }
 
   return (
@@ -58,6 +74,7 @@ function BlogUpload() {
             rows={1}
             placeholder="Escribe el título de tu blog."
             className="mb-4 ms-4 w-[80%] rounded-md border-2 border-zinc-100 p-2"
+            required
           />
           <br />
           <label className="mb-5 text-xl font-bold">Portada:</label>
@@ -92,6 +109,16 @@ function BlogUpload() {
             />
           </div>
         </form>
+        {alert.render && (
+          <div
+            className="fixed right-5 top-5 rounded-lg border-2 border-black bg-white 
+            p-2 text-black"
+          >
+            <FontAwesomeIcon icon={alert.ok ? faCheck : faXmark} />
+            &nbsp;
+            {alert.ok ? "El blog se ha subido correctamente." : alert.message}
+          </div>
+        )}
       </main>
     </Template>
   );

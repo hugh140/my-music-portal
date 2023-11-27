@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ElementsContext } from "../../pages/upload/BlogUpload";
+import { ElementsContext } from "../../pages/BlogUpload";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";

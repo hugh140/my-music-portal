@@ -19,7 +19,7 @@ function ImgSection({ name }) {
       border-2 border-dashed hover:border-zinc-400"
       style={{ minHeight: "10rem", minWidth: "10rem" }}
     >
-      <input {...getInputProps()} name={name} />
+      <input {...getInputProps()} name={name} required />
       {inputImg ? (
         <img
           src={inputImg}
@@ -28,7 +28,9 @@ function ImgSection({ name }) {
           alt=""
         />
       ) : (
-        <p className="p-20 text-center w-full">Selecciona o dropea una imagen.</p>
+        <p className="w-full p-20 text-center">
+          Selecciona o dropea una imagen.
+        </p>
       )}
     </div>
   );
@@ -41,6 +43,7 @@ function TextSection() {
       placeholder="..."
       name="text"
       className="mt-5 w-full rounded-md border-2 p-2"
+      required
     />
   );
 }
