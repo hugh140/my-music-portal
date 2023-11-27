@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/blog-example" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogPage />} />
         <Route path="/adminPanel" element={<AdminPage />} />
         <Route path="/adminPanel/upload/blog" element={<BlogUpload />} />
         <Route path="/login" element={<LoginPage />} />

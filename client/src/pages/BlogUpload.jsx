@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import Template from "../components/template/template";
 import Sections from "../components/uploadSections/Sections";
@@ -17,6 +18,7 @@ function BlogUpload() {
   const [elements, setElements] = useState([]);
   const [lastDeleted, setLastDeleted] = useState(Infinity);
   const [alert, setAlert] = useState({ render: false, ok: false });
+  const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,9 +37,11 @@ function BlogUpload() {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
+    setLoader(true);
     try {
+      const serverUrl = import.meta.env.VITE_SERVER_URL;
       const buildedJson = await jsonPostBuilder(evt);
-      let response = await fetch("http://localhost:3000/api/blog", {
+      let response = await fetch(serverUrl + "api/blog", {
         method: "POST",
         body: buildedJson,
         credentials: "include",
@@ -46,6 +50,7 @@ function BlogUpload() {
         },
       });
       response = await response.json();
+      setLoader(false);
       if (response.ok === true) {
         setAlert({ render: true, ok: true });
         setTimeout(() => {
@@ -54,6 +59,7 @@ function BlogUpload() {
       } else throw new Error(response.message);
     } catch (e) {
       setAlert({ render: true, ok: false, message: e });
+      setLoader(false);
       setTimeout(() => {
         setAlert({ render: false, ok: false });
       }, 3000);
@@ -101,12 +107,17 @@ function BlogUpload() {
           <br />
 
           <div className="mb-40 flex flex-row-reverse">
-            <input
+            <button
               type="submit"
-              value="Subir Blog"
               className="my-4 rounded-md border-2 border-zinc-500 p-2 hover:bg-zinc-500 
             hover:text-white active:bg-white active:text-black"
-            />
+            >
+              {loader ? (
+                <FontAwesomeIcon icon={faSpinner} spin={true} className="px-7" />
+              ) : (
+                "Subir Blog"
+              )}
+            </button>
           </div>
         </form>
         {alert.render && (

@@ -1,42 +1,36 @@
 import Template from "../components/template/template";
+import useBlog from "../hooks/blog";
+import { useParams } from "react-router-dom";
 
 function BlogPage() {
+  const { id } = useParams();
+  const blog = useBlog(id);
+
   return (
     <Template>
       <section className="px-5 py-5 sm:px-10">
-        <h1 className="text-3xl font-bold">Lorem, ipsum dolor.</h1>
+        <h1 className="text-3xl font-bold">{blog?.title}</h1>
         <img
-          className="w-full rounded object-cover my-5"
-          src="https://picsum.photos/1000/500?grayscale"
+          className="my-5 aspect-video w-full rounded object-cover"
+          src={blog?.headerImg}
           alt=""
         />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-          quaerat necessitatibus laudantium excepturi dicta officiis
-          voluptatibus ad quo quis rerum, dolore nesciunt, voluptatem
-          accusantium earum. Doloremque odit blanditiis harum exercitationem,
-          iste ducimus, dicta cumque vel aut rerum eveniet dolore? Distinctio
-          deleniti suscipit impedit assumenda harum facere illo dolorem et
-          sequi.
-        </p><br />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-          quaerat necessitatibus laudantium excepturi dicta officiis
-          voluptatibus ad quo quis rerum, dolore nesciunt, voluptatem
-          accusantium earum. Doloremque odit blanditiis harum exercitationem,
-          iste ducimus, dicta cumque vel aut rerum eveniet dolore? Distinctio
-          deleniti suscipit impedit assumenda harum facere illo dolorem et
-          sequi.
-        </p><br />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-          quaerat necessitatibus laudantium excepturi dicta officiis
-          voluptatibus ad quo quis rerum, dolore nesciunt, voluptatem
-          accusantium earum. Doloremque odit blanditiis harum exercitationem,
-          iste ducimus, dicta cumque vel aut rerum eveniet dolore? Distinctio
-          deleniti suscipit impedit assumenda harum facere illo dolorem et
-          sequi.
-        </p><br />
+        {blog?.blogContent?.map((section, index) => {
+          switch (section.type) {
+            case "paragraph":
+              return <p key={index}>{section.content}</p>;
+            case "image":
+              return (
+                <img
+                  className="my-5 aspect-video w-full rounded object-cover"
+                  src={section.content}
+                  alt=""
+                  key={index}
+                />
+              );
+          }
+        })}
+        <br />
       </section>
     </Template>
   );

@@ -4,24 +4,28 @@ import BlogRecents from "../components/indexPage/BlogRecents";
 import MusicRecents from "../components/indexPage/MusicRecents";
 import LiveAnimations from "../components/indexPage/LiveAnimations";
 
+import useHeaders from "../hooks/headers";
+
 function MainPage() {
+  const headers = useHeaders();
+
   return (
     <Template>
-        <Headline />
+      <Headline header={headers[0]} />
 
-        <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
+      <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
 
-        <BlogRecents />
+      <BlogRecents blogs={headers.slice(1, headers.length)} />
 
-        <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
+      <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
 
-        <MusicRecents />
+      <MusicRecents />
 
-        <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
+      <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
 
-        <LiveAnimations />
+      <LiveAnimations />
 
-        <div className="mx-auto h-16 w-4" />
+      <div className="mx-auto h-16 w-4" />
     </Template>
   );
 }

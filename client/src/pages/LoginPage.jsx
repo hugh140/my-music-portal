@@ -43,7 +43,7 @@ function LoginPage() {
   }
 
   return (
-    <Template navbar={false} footer={false}>
+    <Template navbar={false} footer={false} hscreen={true}>
       <div className="mx-auto flex h-full w-3/4 items-center justify-center md:w-1/2 lg:w-1/3">
         <div className="w-full">
           <h1 className="mb-10 text-center text-4xl">

@@ -61,8 +61,8 @@ function AdminPage() {
             <FontAwesomeIcon icon={faPlus} /> Publicar
           </button>
           <button
-            className="ms-5 rounded border-2 border-black bg-green-50 p-2 text-black 
-        hover:bg-zinc-200"
+            className="ms-5 rounded border-2 border-black bg-zinc-100 p-2 
+          text-black hover:bg-zinc-200"
           >
             <FontAwesomeIcon icon={faUsers} /> Registrar usuarios
           </button>
