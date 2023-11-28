@@ -5,7 +5,7 @@ function BlogRecents({ blogs }) {
     <article className="border-2 border-neutral-200 p-5" id="blog">
       <div className="relative h-12">
         <h2 className="absolute mb-5 text-xl font-semibold">Recientes</h2>
-        <a className="absolute end-0 text-blue-700 hover:underline" href="">
+        <a className="absolute end-0 text-blue-700 hover:underline" href="/blogs">
           Ver más &raquo;
         </a>
       </div>

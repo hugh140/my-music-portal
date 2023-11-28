@@ -8,7 +8,7 @@ function BlogPage() {
 
   return (
     <Template>
-      <section className="px-5 py-5 sm:px-10">
+      <section className="p-5 sm:px-10">
         <h1 className="text-3xl font-bold">{blog?.title}</h1>
         <img
           className="my-5 aspect-video w-full rounded object-cover"

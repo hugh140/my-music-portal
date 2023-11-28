@@ -7,7 +7,7 @@ import LiveAnimations from "../components/indexPage/LiveAnimations";
 import useHeaders from "../hooks/headers";
 
 function MainPage() {
-  const headers = useHeaders();
+  const headers = useHeaders(0, 6);
 
   return (
     <Template>

@@ -42,7 +42,7 @@ router.get("/blogs", (req, res) => {
 
     Blog.find()
       .skip(start)
-      .limit(end)
+      .limit(end - start)
       .sort({ createdAt: "desc" })
       .select("title headerImg")
       .then((blogs) => {

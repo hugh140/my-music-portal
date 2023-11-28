@@ -5,6 +5,7 @@ import BlogPage from "./pages/BlogPage";
 import AdminPage from "./pages/AdminPage";
 import { BlogUpload } from "./pages/BlogUpload";
 import LoginPage from "./pages/LoginPage";
+import GeneralPage from "./pages/GeneralPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/adminPanel" element={<AdminPage />} />
         <Route path="/adminPanel/upload/blog" element={<BlogUpload />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/:type" element={<GeneralPage />} />
       </Routes>
     </BrowserRouter>
   );
