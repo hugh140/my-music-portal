@@ -32,8 +32,8 @@ function deleteBlogImgs(blog) {
 // Routers
 router.get("/blogs", (req, res) => {
   try {
-    let start = req.query.start;
-    let end = req.query.end;
+    const start = req.query.start;
+    const end = req.query.end;
 
     if (!start || !end) throw new Error("Blank attributes not permitted.");
 

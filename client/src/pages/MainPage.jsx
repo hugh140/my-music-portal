@@ -5,9 +5,11 @@ import MusicRecents from "../components/indexPage/MusicRecents";
 import LiveAnimations from "../components/indexPage/LiveAnimations";
 
 import useHeaders from "../hooks/headers";
+import useMusic from "../hooks/music";
 
 function MainPage() {
   const headers = useHeaders(0, 6);
+  const music = useMusic(3);
 
   return (
     <Template>
@@ -19,7 +21,7 @@ function MainPage() {
 
       <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
 
-      <MusicRecents />
+      <MusicRecents releases={music} />
 
       <div className="mx-auto h-8 w-4 border-x-4 border-double border-neutral-400" />
 

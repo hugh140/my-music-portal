@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const blogRoutes = require("./routes/blog");
 const adminRoutes = require("./routes/admin");
+const musicRoutes = require("./routes/music");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use(cookieParser());
 
 app.use("/api", blogRoutes);
 app.use("/admin", adminRoutes);
+app.use("/music", musicRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URI)
