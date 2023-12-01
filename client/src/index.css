@@ -53,3 +53,7 @@ body {
 .rotate-off {
   transform: translateY(-50%) rotate(180deg);
 }
+
+#hoverOptions:hover #blogOptions {
+  display: block;
+}

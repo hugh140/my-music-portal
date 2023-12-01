@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 
 const ElementsContext = createContext();
 
+const loginUrl = "/login?redirect=/adminPanel/upload/blog";
+
 function BlogUpload() {
   const [elements, setElements] = useState([]);
   const [lastDeleted, setLastDeleted] = useState(Infinity);
@@ -22,7 +24,7 @@ function BlogUpload() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!document.cookie) navigate("/login?redirect=/adminPanel/upload/blog");
+    if (!document.cookie) navigate(loginUrl);
   }, [navigate]);
 
   function addSection(type, index) {
@@ -58,7 +60,7 @@ function BlogUpload() {
         }, 1000);
       } else throw new Error(response.message);
     } catch (e) {
-      setAlert({ render: true, ok: false, message: e });
+      setAlert({ render: true, ok: false, message: String(e) });
       setLoader(false);
       setTimeout(() => {
         setAlert({ render: false, ok: false });
@@ -113,7 +115,11 @@ function BlogUpload() {
             hover:text-white active:bg-white active:text-black"
             >
               {loader ? (
-                <FontAwesomeIcon icon={faSpinner} spin={true} className="px-7" />
+                <FontAwesomeIcon
+                  icon={faSpinner}
+                  spin={true}
+                  className="px-7"
+                />
               ) : (
                 "Subir Blog"
               )}

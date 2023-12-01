@@ -15,12 +15,12 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/blog/:id" element={<BlogPage />} />
+        <Route path="/music/:id" element={<MusicPage />} />
+        <Route path="/general/blogs" element={<GeneralBlogs />} />
+        <Route path="/general/music" element={<GeneralMusic />} />
         <Route path="/adminPanel" element={<AdminPage />} />
         <Route path="/adminPanel/upload/blog" element={<BlogUpload />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/general/blogs" element={<GeneralBlogs />} />
-        <Route path="/music/:id" element={<MusicPage />} />
-        <Route path="/general/music" element={<GeneralMusic />} />
       </Routes>
     </BrowserRouter>
   );

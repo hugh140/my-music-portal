@@ -10,7 +10,7 @@ function Template({ children, footer, navbar, hscreen, footerInfo }) {
   return (
     <>
       <main
-        className="container mx-auto"
+        className="container mx-auto px-3"
         style={{ height: hscreen ? "100vh" : "100%" }}
       >
         <header className="relative mt-5">

@@ -46,9 +46,12 @@ router.post("/login", async (req, res) => {
     const admin = await Admin.findOne({ email: email }).exec();
     if (bcrypt.compareSync(password, admin.password)) {
       const token = jwt.sign({ name: admin.name }, process.env.SECRET, {
-        expiresIn: "1h",
+        expiresIn: 1000 * 30,
       });
-      res.cookie("HR", token);
+      res.cookie("HR", token, {
+        secure: true,
+        maxAge: 1000 * 60 * 60,
+      });
       res.json({ message: "Ha iniciado sesión correctamente.", ok: true });
     } else
       res.send({

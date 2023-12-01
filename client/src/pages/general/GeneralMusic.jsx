@@ -23,7 +23,7 @@ function GeneralMusic() {
                 key={header.id}
                 href={`/music/${header.id}`}
                 className="mb-4 rounded-lg border-2 border-zinc-100 
-          p-2 decoration-blue-700 underline-offset-2 hover:underline md:w-64 lg:w-80"
+                p-2 decoration-blue-700 underline-offset-2 hover:underline md:w-64 lg:w-72"
               >
                 <img
                   className="aspect-square rounded object-cover"

@@ -69,13 +69,14 @@ router.get("/blog/:id", (req, res) => {
     });
 });
 
-router.post("/blog", (req, res) => {
+router.post("/blog", async (req, res) => {
   try {
     const blog = req.body;
     const token = req.cookies.HR;
+
     if (!blog) throw new Error("The content is blank.");
 
-    const userName = jwt.verify(token, process.env.SECRET).name;
+    const userName = await jwt.verify(token, process.env.SECRET).name;
 
     saveBlogImgs(blog);
 
@@ -86,15 +87,8 @@ router.post("/blog", (req, res) => {
       author: userName,
     });
 
-    newBlog
-      .save()
-      .then(() => {
-        console.log(newBlog, "\n saved succesfully\n");
-        res.json({ message: "Blog saved succesfully", ok: true });
-      })
-      .catch((error) => {
-        errorMessage(res, error, 400);
-      });
+    await newBlog.save();
+    res.json({ message: "Blog saved succesfully", ok: true });
   } catch (error) {
     errorMessage(res, error, 400);
   }
@@ -137,7 +131,7 @@ router.delete("/blog/:id", (req, res) => {
       deleteBlogImgs(blog);
 
       console.log("Blog deleted succesfully\n");
-      res.send("Blog deleted succesfully");
+      res.json({ message: "Blog deleted succesfully", ok: true });
     })
     .catch((error) => {
       errorMessage(res, error, 400);
