@@ -1,19 +1,18 @@
 import { useContext, useEffect, useState } from "react";
-import { ElementsContext } from "../../pages/BlogUpload";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { TextSection, ImgSection } from "./InputSections";
 
-function Sections({ index, type }) {
-  const context = useContext(ElementsContext);
+function Sections({ index, type, contextType, value }) {
+  const context = useContext(contextType);
   const [realIndex, setRealIndex] = useState(index);
   const [sectionContent] = useState(() => {
     switch (type) {
       case "Texto":
-        return <TextSection />;
+        return <TextSection value={value} />;
       case "Imagen":
-        return <ImgSection name="img" />;
+        return <ImgSection value={value} name="img" index={index} />;
     }
   });
 
@@ -27,7 +26,7 @@ function Sections({ index, type }) {
 
   useEffect(() => {
     if (realIndex > context.lastDeleted) setRealIndex(realIndex - 1);
-  }, [context.lastDeleted, realIndex]);
+  }, [context, realIndex]);
 
   return (
     <main key={index} className="mt-8">
@@ -51,4 +50,10 @@ export default Sections;
 Sections.propTypes = {
   index: PropTypes.number,
   type: PropTypes.string,
+  contextType: PropTypes.any,
+  value: PropTypes.string,
+};
+
+Sections.defaultProps = {
+  value: null,
 };

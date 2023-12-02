@@ -30,7 +30,7 @@ function deleteBlogImgs(blog) {
 }
 
 // Routers
-router.get("/blogs", (req, res) => {
+router.get("/blogs", async (req, res) => {
   try {
     const start = req.query.start;
     const end = req.query.end;
@@ -40,33 +40,26 @@ router.get("/blogs", (req, res) => {
     if (start >= end || end - start > limitOfBlogs || start < 0 || end < 0)
       throw new Error(`The blogs petition has not permitted range.`);
 
-    Blog.find()
+    const response = await Blog.find()
       .skip(start)
       .limit(end - start)
       .sort({ createdAt: "desc" })
-      .select("title headerImg")
-      .then((blogs) => {
-        res.json(blogs);
-      })
-      .catch((error) => {
-        errorMessage(res, error, 404);
-      });
+      .select("title headerImg");
+    res.json(response);
   } catch (error) {
     errorMessage(res, error, 400);
   }
 });
 
-router.get("/blog/:id", (req, res) => {
+router.get("/blog/:id", async (req, res) => {
   const { id } = req.params;
-
-  Blog.findById(id)
-    .then((blogs) => {
-      res.send(blogs);
-      console.log(blogs);
-    })
-    .catch((error) => {
-      errorMessage(res, error, 404);
-    });
+  try {
+    const response = await Blog.findById(id);
+    res.send(response);
+    console.log(response);
+  } catch (e) {
+    errorMessage(res, error, 404);
+  }
 });
 
 router.post("/blog", async (req, res) => {
@@ -94,11 +87,15 @@ router.post("/blog", async (req, res) => {
   }
 });
 
-router.put("/blog/:id", (req, res) => {
+router.put("/blog/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const blog = req.body;
+    const token = req.cookies.HR;
+
     if (!blog) throw new Error("The content is blank.");
+
+    const userName = await jwt.verify(token, process.env.SECRET).name;
 
     saveBlogImgs(blog);
 
@@ -106,36 +103,26 @@ router.put("/blog/:id", (req, res) => {
       title: blog.title,
       headerImg: blog.headerImg,
       blogContent: blog.blogContent,
+      author: userName,
     };
 
-    Blog.findOneAndUpdate({ _id: id }, updateBlog)
-      .then((blog) => {
-        deleteBlogImgs(blog);
-
-        console.log(updateBlog, "\n updated succesfully\n");
-        res.send("Blog updated succesfully");
-      })
-      .catch((error) => {
-        errorMessage(res, error, 400);
-      });
+    const response = await Blog.findOneAndUpdate({ _id: id }, updateBlog);
+    deleteBlogImgs(response);
+    console.log(updateBlog, "\n updated succesfully\n");
+    res.send({ message: "Blog updated succesfully", ok: true });
   } catch (error) {
     errorMessage(res, error, 400);
   }
 });
 
-router.delete("/blog/:id", (req, res) => {
+router.delete("/blog/:id", async (req, res) => {
   const { id } = req.params;
 
-  Blog.findOneAndDelete({ _id: id })
-    .then((blog) => {
-      deleteBlogImgs(blog);
+  const response = await Blog.findOneAndDelete({ _id: id });
+  deleteBlogImgs(response);
 
-      console.log("Blog deleted succesfully\n");
-      res.json({ message: "Blog deleted succesfully", ok: true });
-    })
-    .catch((error) => {
-      errorMessage(res, error, 400);
-    });
+  console.log("Blog deleted succesfully\n");
+  res.json({ message: "Blog deleted succesfully", ok: true });
 });
 
 module.exports = router;

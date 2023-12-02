@@ -18,7 +18,7 @@ function BlogPage() {
         {blog?.blogContent?.map((section, index) => {
           switch (section.type) {
             case "paragraph":
-              return <p key={index}>{section.content}</p>;
+              return <p className="whitespace-pre-line" key={index}>{section.content}</p>;
             case "image":
               return (
                 <img

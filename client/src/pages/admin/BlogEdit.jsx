@@ -4,35 +4,72 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-import Template from "../components/template/template";
-import Sections from "../components/uploadSections/Sections";
-import { ImgSection } from "../components/uploadSections/InputSections";
-import OptionsBar from "../components/uploadSections/optionsBar";
+import Template from "../../components/template/template";
+import Sections from "../../components/uploadSections/Sections";
+import { ImgSection } from "../../components/uploadSections/InputSections";
+import OptionsBar from "../../components/uploadSections/optionsBar";
 
-import jsonPostBuilder from "../scripts/jsonPostBuilder";
+import jsonPostBuilder from "../../scripts/jsonPostBuilder";
 import { useNavigate } from "react-router-dom";
+import useBlog from "../../hooks/blog";
+import { useParams } from "react-router-dom";
 
-const ElementsContext = createContext();
+const EditContext = createContext();
 
-const loginUrl = "/login?redirect=/adminPanel/upload/blog";
-
-function BlogUpload() {
+function BlogEdit() {
   const [elements, setElements] = useState([]);
   const [lastDeleted, setLastDeleted] = useState(Infinity);
   const [alert, setAlert] = useState({ render: false, ok: false });
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 
+  const { id } = useParams();
+  const blog = useBlog(id);
+
   useEffect(() => {
-    if (!document.cookie) navigate(loginUrl);
-  }, [navigate]);
+    if (!document.cookie)
+      navigate(`/login?redirect=/adminPanel/edit/blog/${id}`);
+  }, [navigate, id, blog]);
+
+  useEffect(() => {
+    if (!blog.blogContent) return;
+    const el = [];
+    for (const content of blog.blogContent) {
+      if (content.type === "image")
+        el.push(
+          <Sections
+            key={content.content}
+            index={el.length}
+            type="Imagen"
+            contextType={EditContext}
+            value={content.content}
+          />
+        );
+      else if (content.type === "paragraph")
+        el.push(
+          <Sections
+            key={content.content}
+            index={el.length}
+            type="Texto"
+            contextType={EditContext}
+            value={content.content}
+          />
+        );
+    }
+    setElements(el);
+  }, [blog.blogContent]);
 
   function addSection(type, index) {
     const el = [...elements];
     el.splice(
       index,
       0,
-      <Sections key={Date.now()} index={elements.length} type={type} />
+      <Sections
+        key={Date.now()}
+        index={elements.length}
+        type={type}
+        contextType={EditContext}
+      />
     );
     setElements(el);
   }
@@ -40,11 +77,13 @@ function BlogUpload() {
   async function handleSubmit(evt) {
     evt.preventDefault();
     setLoader(true);
+    const buildedJson = await jsonPostBuilder(evt);
+    console.log(buildedJson);
     try {
       const serverUrl = import.meta.env.VITE_SERVER_URL;
       const buildedJson = await jsonPostBuilder(evt);
-      let response = await fetch(serverUrl + "api/blog", {
-        method: "POST",
+      let response = await fetch(serverUrl + "api/blog/" + id, {
+        method: "PUT",
         body: buildedJson,
         credentials: "include",
         headers: {
@@ -55,9 +94,7 @@ function BlogUpload() {
       setLoader(false);
       if (response.ok === true) {
         setAlert({ render: true, ok: true });
-        setTimeout(() => {
-          window.location.href = "/adminPanel";
-        }, 1000);
+        window.location.href = "/adminPanel";
       } else throw new Error(response.message);
     } catch (e) {
       setAlert({ render: true, ok: false, message: String(e) });
@@ -81,15 +118,16 @@ function BlogUpload() {
             name="title"
             rows={1}
             placeholder="Escribe el título de tu blog."
+            defaultValue={blog?.title}
             className="mb-4 ms-4 w-[80%] rounded-md border-2 border-zinc-100 p-2"
             required
           />
           <br />
           <label className="mb-5 text-xl font-bold">Portada:</label>
           <br />
-          <ImgSection name="header" />
+          <ImgSection name="header" value={blog?.headerImg} />
 
-          <ElementsContext.Provider
+          <EditContext.Provider
             value={{ elements, setElements, lastDeleted, setLastDeleted }}
           >
             {elements.map((section, index) => (
@@ -100,7 +138,7 @@ function BlogUpload() {
                 {section}
               </div>
             ))}
-          </ElementsContext.Provider>
+          </EditContext.Provider>
 
           <div className="h-2">
             <OptionsBar addSection={addSection} index={elements.length} />
@@ -113,6 +151,7 @@ function BlogUpload() {
               type="submit"
               className="my-4 rounded-md border-2 border-zinc-500 p-2 hover:bg-zinc-500 
             hover:text-white active:bg-white active:text-black"
+              disabled={loader}
             >
               {loader ? (
                 <FontAwesomeIcon
@@ -121,7 +160,7 @@ function BlogUpload() {
                   className="px-7"
                 />
               ) : (
-                "Subir Blog"
+                "Editar Blog"
               )}
             </button>
           </div>
@@ -140,4 +179,4 @@ function BlogUpload() {
     </Template>
   );
 }
-export { BlogUpload, ElementsContext };
+export { BlogEdit };

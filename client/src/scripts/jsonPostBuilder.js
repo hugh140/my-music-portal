@@ -18,7 +18,7 @@ function jsonPostBuilder(evt) {
     let indexImgs = 0;
 
     setTimeout(() => {
-      for (const entry of formData) {
+      for (const entry of formData)
         switch (entry[0]) {
           case "title":
             buildedJson.title = entry[1];
@@ -30,21 +30,23 @@ function jsonPostBuilder(evt) {
             break;
 
           case "text":
-            buildedJson.blogContent.push({
-              type: "paragraph",
-              content: entry[1],
-            });
+            if (entry[1])
+              buildedJson.blogContent.push({
+                type: "paragraph",
+                content: entry[1],
+              });
             break;
 
           case "img":
-            buildedJson.blogContent.push({
-              type: "image",
-              content: base64Imgs[indexImgs],
-            });
+            if (base64Imgs[indexImgs])
+              buildedJson.blogContent.push({
+                type: "image",
+                content: base64Imgs[indexImgs],
+              });
             indexImgs++;
             break;
         }
-      }
+
       resolve(JSON.stringify(buildedJson));
     }, 50 * imgFiles.length);
   });

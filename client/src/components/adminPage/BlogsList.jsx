@@ -30,12 +30,13 @@ function BlogList({ handleDelete }) {
               >
                 <FontAwesomeIcon icon={faEye} />
               </a>
-              <button
+              <a
                 className="rounded bg-blue-500 p-4 text-white hover:bg-blue-600 
               hover:text-white active:bg-blue-800"
+                href={`/adminPanel/edit/blog/${blog._id}`}
               >
                 <FontAwesomeIcon icon={faPenToSquare} />
-              </button>
+              </a>
               <button
                 className="rounded bg-red-500 p-4 text-white hover:bg-red-600 
               hover:text-white active:bg-red-800"

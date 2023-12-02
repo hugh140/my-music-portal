@@ -12,4 +12,14 @@ async function toBase64Binaries(file, callback) {
   fileReader.readAsBinaryString(file);
 }
 
-export { getImgUrl, toBase64Binaries };
+async function getImgFromUrl(imgUrl, callback) {
+  try {
+    let blob = await fetch(imgUrl);
+    blob = await blob.blob();
+    getImgUrl(blob, (result) => callback(result, blob));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export { getImgUrl, toBase64Binaries, getImgFromUrl };

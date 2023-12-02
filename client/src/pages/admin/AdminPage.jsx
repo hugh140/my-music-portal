@@ -6,9 +6,9 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-import AdminModal from "../components/adminPage/AdminModal";
-import BlogList from "../components/adminPage/BlogsList";
-import Template from "../components/template/template";
+import AdminModal from "../../components/adminPage/AdminModal";
+import BlogList from "../../components/adminPage/BlogsList";
+import Template from "../../components/template/template";
 
 const buttonOptions = [
   { name: "Blog", link: "/adminPanel/upload/blog" },
@@ -90,7 +90,7 @@ function AdminPage() {
           </button>
         </div>
         {alert && (
-          <div className="mt-4 rounded-lg border-2 border-dashed p-2">
+          <div className="mt-4 p-2">
             {alert}
           </div>
         )}

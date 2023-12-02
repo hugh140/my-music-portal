@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 function BlogRecents({ blogs }) {
   return (
     <>
-      {blogs.lenght && (
+      {Boolean(blogs.length) && (
         <article className="border-2 border-neutral-200 p-5" id="blog">
           <div className="relative h-12">
             <h2 className="absolute mb-5 text-xl font-semibold">Recientes</h2>
