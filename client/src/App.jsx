@@ -10,6 +10,7 @@ import MusicPage from "./pages/MusicPage";
 import GeneralMusic from "./pages/general/GeneralMusic";
 import { BlogEdit } from "./pages/admin/BlogEdit";
 import SoftwareUpload from "./pages/admin/SoftwareUpload";
+import GeneralPages from "./pages/general/GeneralPages";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/music/:id" element={<MusicPage />} />
         <Route path="/general/blogs" element={<GeneralBlogs />} />
         <Route path="/general/music" element={<GeneralMusic />} />
+        <Route path="/general/software" element={<GeneralPages />} />
         <Route path="/adminPanel" element={<AdminPage />} />
         <Route path="/adminPanel/upload/blog" element={<BlogUpload />} />
         <Route path="/adminPanel/edit/blog/:id" element={<BlogEdit />} />
