@@ -12,7 +12,7 @@ import Template from "../../components/template/template";
 
 const buttonOptions = [
   { name: "Blog", link: "/adminPanel/upload/blog" },
-  { name: "Software", link: "/" },
+  { name: "Software", link: "/adminPanel/upload/software" },
 ];
 
 function AdminPage() {
@@ -113,6 +113,7 @@ function AdminPage() {
           </button>
         </div>
         <h1 className="mt-5 text-2xl">Blogs</h1>
+        <hr className="mt-5" />
         <div>
           <section className="relative flex flex-wrap place-content-center gap-3 p-5 md:place-content-center">
             <BlogList handleDelete={handleDeleteBlog} />

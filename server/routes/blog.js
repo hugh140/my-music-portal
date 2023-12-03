@@ -35,7 +35,7 @@ router.get("/blogs", async (req, res) => {
     const start = req.query.start;
     const end = req.query.end;
 
-    if (!start || !end) throw new Error("Blank attributes not permitted.");
+    if (!start || !end) throw new Error("Blank attributes are not permitted.");
 
     if (start >= end || end - start > limitOfBlogs || start < 0 || end < 0)
       throw new Error(`The blogs petition has not permitted range.`);
@@ -56,7 +56,6 @@ router.get("/blog/:id", async (req, res) => {
   try {
     const response = await Blog.findById(id);
     res.send(response);
-    console.log(response);
   } catch (e) {
     errorMessage(res, error, 404);
   }
@@ -68,6 +67,8 @@ router.post("/blog", async (req, res) => {
     const token = req.cookies.HR;
 
     if (!blog) throw new Error("The content is blank.");
+    if (!token)
+      throw new Error("It's necessary to be logged for execute this action.");
 
     const userName = await jwt.verify(token, process.env.SECRET).name;
 
@@ -94,6 +95,8 @@ router.put("/blog/:id", async (req, res) => {
     const token = req.cookies.HR;
 
     if (!blog) throw new Error("The content is blank.");
+    if (!token)
+      throw new Error("It's necessary to be logged for execute this action.");
 
     const userName = await jwt.verify(token, process.env.SECRET).name;
 
@@ -108,7 +111,6 @@ router.put("/blog/:id", async (req, res) => {
 
     const response = await Blog.findOneAndUpdate({ _id: id }, updateBlog);
     deleteBlogImgs(response);
-    console.log(updateBlog, "\n updated succesfully\n");
     res.send({ message: "Blog updated succesfully", ok: true });
   } catch (error) {
     errorMessage(res, error, 400);
@@ -117,11 +119,16 @@ router.put("/blog/:id", async (req, res) => {
 
 router.delete("/blog/:id", async (req, res) => {
   const { id } = req.params;
+  const token = req.cookies.HR;
+
+  if (!token)
+    throw new Error("It's necessary to be logged for execute this action.");
+
+  await jwt.verify(token, process.env.SECRET);
 
   const response = await Blog.findOneAndDelete({ _id: id });
   deleteBlogImgs(response);
 
-  console.log("Blog deleted succesfully\n");
   res.json({ message: "Blog deleted succesfully", ok: true });
 });
 

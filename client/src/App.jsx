@@ -9,6 +9,7 @@ import GeneralBlogs from "./pages/general/GeneralBlogs";
 import MusicPage from "./pages/MusicPage";
 import GeneralMusic from "./pages/general/GeneralMusic";
 import { BlogEdit } from "./pages/admin/BlogEdit";
+import SoftwareUpload from "./pages/admin/SoftwareUpload";
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
         <Route path="/adminPanel" element={<AdminPage />} />
         <Route path="/adminPanel/upload/blog" element={<BlogUpload />} />
         <Route path="/adminPanel/edit/blog/:id" element={<BlogEdit />} />
+        <Route
+          path="/adminPanel/upload/software"
+          element={<SoftwareUpload />}
+        />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
