@@ -118,18 +118,23 @@ router.put("/blog/:id", async (req, res) => {
 });
 
 router.delete("/blog/:id", async (req, res) => {
-  const { id } = req.params;
-  const token = req.cookies.HR;
+  try {
 
-  if (!token)
-    throw new Error("It's necessary to be logged for execute this action.");
-
-  await jwt.verify(token, process.env.SECRET);
-
-  const response = await Blog.findOneAndDelete({ _id: id });
-  deleteBlogImgs(response);
-
-  res.json({ message: "Blog deleted succesfully", ok: true });
+    const { id } = req.params;
+    const token = req.cookies.HR;
+  
+    if (!token)
+      throw new Error("It's necessary to be logged for execute this action.");
+  
+    await jwt.verify(token, process.env.SECRET);
+  
+    const response = await Blog.findOneAndDelete({ _id: id });
+    deleteBlogImgs(response);
+  
+    res.json({ message: "Blog deleted succesfully", ok: true });
+  } catch(e) {
+    errorMessage(res, e, 401)
+  }
 });
 
 module.exports = router;

@@ -14,7 +14,7 @@ router.post("/upload", async (req, res) => {
     if (!token)
       throw new Error("It's necessary to be logged for execute this action.");
 
-    if (!title) throw new Error("The title is blank.");
+    if (!title) throw new Error("The title parameter is blank.");
 
     const files = req.files.pageFiles;
     if (!files) throw new Error("It's necessary upload any file.");
@@ -48,7 +48,7 @@ router.post("/upload", async (req, res) => {
     await page.screenshot({
       path: `public/software/web_screenshots/${title}.jpg`,
       optimizeForSpeed: true,
-      quality: 20
+      quality: 20,
     });
     await browser.close();
 
@@ -72,6 +72,91 @@ router.get("/", async (req, res) => {
     res.json(pages);
   } catch (e) {
     errorMessage(res, e, 502);
+  }
+});
+
+router.put("/update/:name", async (req, res) => {
+  try {
+    const name = req.params.name;
+    const newName = req.query.name;
+    const token = req.cookies.HR;
+
+    if (!token)
+      throw new Error("It's necessary to be logged for execute this action.");
+
+    if (!name) throw new Error("The name parameter is blank.");
+
+    const files = req.files.pageFiles;
+    if (!files) throw new Error("It's necessary upload any file.");
+
+    jwt.verify(token, process.env.SECRET);
+
+    if (!files.some((file) => file.name.split("/").at(-1) === "index.html"))
+      throw new Error(
+        "It's necessary an index.html file for upload the files."
+      );
+
+    const dirPath = path.join(__dirname, "..", "public", "software") + "/";
+    await fs.promises.rm(dirPath + name, { recursive: true });
+    await fs.promises.rm(dirPath + `web_screenshots/${name}.jpg`, {
+      recursive: true,
+    });
+
+    const filePath =
+      path.join(__dirname, "..", "public", "software", newName) + "/";
+
+    for (const file of files) {
+      await fs.promises.mkdir(
+        filePath + file.name.split("/").slice(2, -1).join("/") + "/",
+        { recursive: true }
+      );
+      await file.mv(filePath + file.name.split("/").slice(2).join("/"));
+    }
+
+    const pageUrl = path.join(
+      process.env.SERVER_URL,
+      "/software",
+      newName,
+      "index.html"
+    );
+
+    const browser = await puppeteer.launch({ headless: "new" });
+    const page = await browser.newPage();
+    await page.goto(pageUrl);
+    await page.screenshot({
+      path: `public/software/web_screenshots/${newName}.jpg`,
+      optimizeForSpeed: true,
+      quality: 20,
+    });
+    await browser.close();
+
+    res.json({ message: "The program was updated successfully.", ok: true });
+  } catch (e) {
+    errorMessage(res, e, 400);
+  }
+});
+
+router.delete("/delete/:name", async (req, res) => {
+  try {
+    const name = req.params.name;
+    const token = req.cookies.HR;
+
+    if (!token)
+      throw new Error("It's necessary to be logged for execute this action.");
+
+    if (!name) throw new Error("The name parameter is blank.");
+
+    jwt.verify(token, process.env.SECRET);
+
+    const dirPath = path.join(__dirname, "..", "public", "software") + "/";
+    await fs.promises.rm(dirPath + name, { recursive: true });
+    await fs.promises.rm(dirPath + `web_screenshots/${name}.jpg`, {
+      recursive: true,
+    });
+
+    res.json({ message: "The program was deleted successfully.", ok: true });
+  } catch (e) {
+    errorMessage(res, e, 400);
   }
 });
 

@@ -1,20 +1,20 @@
 import PropTypes from "prop-types";
-import useHeaders from "../../hooks/headers";
+import useSoftware from "../../hooks/software"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
-function BlogList({ handleDelete }) {
-  const blogs = useHeaders(0, 4);
+function SoftwareList({ handleDelete }) {
+  const webPages = useSoftware();
   return (
     <>
-      {blogs.length ? (
-        blogs?.map((blog) => (
+      {webPages.length ? (
+        webPages?.map((page) => (
           <div
-            key={blog._id}
+            key={page.title}
             className="relative mb-4 rounded-lg border-2 border-zinc-100
-        p-2 md:w-64 lg:w-72"
+            p-2 md:w-64 lg:w-72"
             id="hoverOptions"
           >
             <div
@@ -26,21 +26,21 @@ function BlogList({ handleDelete }) {
                 <a
                   className="rounded bg-white p-4 hover:bg-zinc-200 
               active:bg-zinc-400"
-                  href={`/blog/${blog._id}`}
+                  href={page.url}
                 >
                   <FontAwesomeIcon icon={faEye} />
                 </a>
                 <a
-                  className="rounded bg-blue-500 p-4 text-white hover:bg-blue-600 
-              hover:text-white active:bg-blue-800"
-                  href={`/adminPanel/edit/blog/${blog._id}`}
+                  className="rounded bg-green-500 p-4 text-white hover:bg-green-600 
+              hover:text-white active:bg-green-800"
+                  href={`/adminPanel/edit/page/${page._id}`}
                 >
-                  <FontAwesomeIcon icon={faPenToSquare} />
+                  <FontAwesomeIcon icon={faArrowUp} />
                 </a>
                 <button
                   className="rounded bg-red-500 p-4 text-white hover:bg-red-600 
               hover:text-white active:bg-red-800"
-                  onClick={() => handleDelete(blog._id)}
+                  onClick={() => handleDelete(page.title)}
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
@@ -48,21 +48,21 @@ function BlogList({ handleDelete }) {
             </div>
             <img
               className="aspect-video rounded object-cover"
-              src={blog.headerImg}
+              src={page.img}
             />
-            <h3 className="text-md mt-2 font-semibold">{blog.title}</h3>
+            <h3 className="text-md mt-2 font-semibold">{page.title}</h3>
           </div>
         ))
       ) : (
         <div className="flex h-60 place-items-center">
-          <div className="text-2xl text-center">Aún no existen blogs.</div>
+          <div className="text-2xl text-center">Aún no existen aplicaciones web.</div>
         </div>
       )}
     </>
   );
 }
-export default BlogList;
+export default SoftwareList;
 
-BlogList.propTypes = {
+SoftwareList.propTypes = {
   handleDelete: PropTypes.func,
 };

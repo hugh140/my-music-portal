@@ -8,6 +8,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import AdminModal from "../../components/adminPage/AdminModal";
 import BlogList from "../../components/adminPage/BlogsList";
+import SoftwareList from "../../components/adminPage/SoftwareList";
 import Template from "../../components/template/template";
 
 const buttonOptions = [
@@ -21,6 +22,10 @@ function AdminPage() {
   const [alert, setAlert] = useState(null);
   const [loader, setLoader] = useState(false);
   const [blogId, setBlogId] = useState(null);
+  const [appName, setAppName] = useState(null);
+  const [postSelector, setPostSelector] = useState(
+    <BlogList handleDelete={handleDeleteBlog} />
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +33,14 @@ function AdminPage() {
   }, [navigate]);
 
   function handleDeleteBlog(blogId) {
+    setAppName(null);
     setBlogId(blogId);
+    setModalDelete(true);
+  }
+
+  function handleDeleteApp(appName) {
+    setBlogId(null);
+    setAppName(appName);
     setModalDelete(true);
   }
 
@@ -36,8 +48,12 @@ function AdminPage() {
     try {
       setLoader(true);
       const serverUrl = import.meta.env.VITE_SERVER_URL;
-      let response = await fetch(serverUrl + "api/blog/" + blogId, {
+      const fetchUri =
+        serverUrl +
+        (blogId ? "api/blog/" + blogId : "software/delete/" + appName);
+      let response = await fetch(fetchUri, {
         method: "DELETE",
+        credentials: "include",
       });
       response = await response.json();
       if (response.ok) {
@@ -89,11 +105,7 @@ function AdminPage() {
             Cancelar
           </button>
         </div>
-        {alert && (
-          <div className="mt-4 p-2">
-            {alert}
-          </div>
-        )}
+        {alert && <div className="mt-4 p-2">{alert}</div>}
       </AdminModal>
       <Template footer={false} navbar={false}>
         <h1 className="my-3 text-center text-3xl">Panel Administrador</h1>
@@ -112,11 +124,29 @@ function AdminPage() {
             <FontAwesomeIcon icon={faUsers} /> Registrar usuarios
           </button>
         </div>
-        <h1 className="mt-5 text-2xl">Blogs</h1>
-        <hr className="mt-5" />
+        <div className="flex flex-row">
+          <button
+            className="mt-5 w-full border-b-2 p-2 text-2xl 
+          hover:border-zinc-500"
+            onClick={() =>
+              setPostSelector(<BlogList handleDelete={handleDeleteBlog} />)
+            }
+          >
+            Blogs
+          </button>
+          <button
+            className="mt-5 w-full border-b-2 p-2 text-2xl 
+          hover:border-zinc-500"
+            onClick={() =>
+              setPostSelector(<SoftwareList handleDelete={handleDeleteApp} />)
+            }
+          >
+            Software
+          </button>
+        </div>
         <div>
           <section className="relative flex flex-wrap place-content-center gap-3 p-5 md:place-content-center">
-            <BlogList handleDelete={handleDeleteBlog} />
+            {postSelector}
           </section>
         </div>
       </Template>

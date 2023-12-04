@@ -139,7 +139,7 @@ function SoftwareUpload() {
                   className="px-7"
                 />
               ) : (
-                "Editar Blog"
+                "Subir App"
               )}
             </button>
           </div>
