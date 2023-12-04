@@ -33,7 +33,7 @@ function SoftwareList({ handleDelete }) {
                 <a
                   className="rounded bg-green-500 p-4 text-white hover:bg-green-600 
               hover:text-white active:bg-green-800"
-                  href={`/adminPanel/edit/page/${page._id}`}
+                  href={`/adminPanel/edit/software/${page.title}`}
                 >
                   <FontAwesomeIcon icon={faArrowUp} />
                 </a>

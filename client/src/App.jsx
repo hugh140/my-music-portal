@@ -11,6 +11,7 @@ import GeneralMusic from "./pages/general/GeneralMusic";
 import { BlogEdit } from "./pages/admin/BlogEdit";
 import SoftwareUpload from "./pages/admin/SoftwareUpload";
 import GeneralPages from "./pages/general/GeneralPages";
+import SoftwareEdit from "./pages/admin/SoftwareEdit";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           path="/adminPanel/upload/software"
           element={<SoftwareUpload />}
         />
+        <Route path="/adminPanel/edit/software/:name" element={<SoftwareEdit />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
