@@ -6,7 +6,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 function BlogList({ handleDelete }) {
-  const blogs = useHeaders(0, 4);
+  const blogs = useHeaders(0, 20);
   return (
     <>
       {blogs.length ? (

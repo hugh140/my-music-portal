@@ -1,23 +1,46 @@
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+
 function EmailForm() {
+  const [alert, setAlert] = useState(null);
+  const [loader, setLoader] = useState(false);
+
   function setInvalidMessage(message, event) {
     event.target.setCustomValidity(message);
   }
 
-  function sendEmail(event) {
-    event.preventDefault()
+  async function sendEmail(event) {
+    event.preventDefault();
+    setLoader(true);
+    try {
+      const formData = new FormData(event.target);
+      const uri = new URLSearchParams();
+      const serverUrl = import.meta.env.VITE_SERVER_URL;
+      uri.append("email", formData.get("email"));
+      uri.append("name", formData.get("name"));
 
-    const name = event.target[0].value
-    const email = event.target[1].value
-    const content = event.target[2].value
-    window.open(`mailto:${email}?subject=${name}&body=${content}`);
+      let response = await fetch(`${serverUrl}email/subscription?${uri}`, {
+        method: "POST",
+      });
+      response = await response.json();
+      setLoader(false);
+      setTimeout(() => setAlert(null), 2500);
+      if (response.ok) setAlert("¡Te has suscrito correctamente!");
+      else throw new Error(response.message);
+    } catch (e) {
+      setAlert(String(e));
+    }
   }
 
   return (
     <article className="mb-5 mt-12">
       <h2 className="text-xl">¡Suscríbete, es gratis!</h2>
-      <p className="mb-3">Así podrás enterarte de las últimas publicaciones por correo.</p>
+      <p className="mb-3">
+        Así podrás enterarte de las últimas publicaciones por correo.
+      </p>
       <form onSubmit={sendEmail}>
-        <label className="mb-1 block" htmlFor="nombre">
+        <label className="mb-1 block" htmlFor="name">
           Nombre:
         </label>
         <input
@@ -25,8 +48,8 @@ function EmailForm() {
           invalid:text-red-500"
           placeholder="Antonio"
           type="text"
-          name="nombre"
-          id="nombre"
+          name="name"
+          id="name"
           pattern="^[a-zA-Z\s'\-]{1,}$"
           onInvalid={(event) =>
             setInvalidMessage(
@@ -37,7 +60,7 @@ function EmailForm() {
           onInput={(event) => setInvalidMessage("", event)}
           required
         />
-        <label className="my-1 block" htmlFor="correo">
+        <label className="my-1 block" htmlFor="email">
           Correo electrónico:
         </label>
         <input
@@ -45,13 +68,10 @@ function EmailForm() {
           invalid:text-red-500"
           placeholder="xyz123@foo.com"
           type="email"
-          name="correo"
-          id="correo"
+          name="email"
+          id="email"
           onInvalid={(event) =>
-            setInvalidMessage(
-              "El correo electrónico es incorrecto.",
-              event
-            )
+            setInvalidMessage("El correo electrónico es incorrecto.", event)
           }
           onInput={(event) => setInvalidMessage("", event)}
           required
@@ -61,8 +81,9 @@ function EmailForm() {
           md:w-auto"
           type="submit"
         >
-          Suscribirse
+          {loader ? <FontAwesomeIcon icon={faSpinner} spin /> : "Suscribirse"}
         </button>
+        <h1 className="mt-3 text-white">{alert}</h1>
       </form>
     </article>
   );

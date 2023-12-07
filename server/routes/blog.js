@@ -1,7 +1,10 @@
 const express = require("express");
 const Blog = require("../models/blog");
 const errorMessage = require("../scripts/errorHandler");
+const transporter = require("../scripts/initEmail");
+const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const newBlogsHTML = require("../emailViews/newBlogs")
 const {
   saveImgBinaries,
   deleteImages,
@@ -81,7 +84,18 @@ router.post("/blog", async (req, res) => {
       author: userName,
     });
 
-    await newBlog.save();
+    const publishedBlog = await newBlog.save();
+
+    let emails = await User.find();
+    emails = emails.map((email) => email.email).join(", ");
+
+    await transporter.sendMail({
+      from: process.env.SMTP_EMAIL,
+      to: emails,
+      subject: blog.title,
+      html: newBlogsHTML(publishedBlog),
+    });
+
     res.json({ message: "Blog saved succesfully", ok: true });
   } catch (error) {
     errorMessage(res, error, 400);
@@ -119,21 +133,20 @@ router.put("/blog/:id", async (req, res) => {
 
 router.delete("/blog/:id", async (req, res) => {
   try {
-
     const { id } = req.params;
     const token = req.cookies.HR;
-  
+
     if (!token)
       throw new Error("It's necessary to be logged for execute this action.");
-  
+
     await jwt.verify(token, process.env.SECRET);
-  
+
     const response = await Blog.findOneAndDelete({ _id: id });
     deleteBlogImgs(response);
-  
+
     res.json({ message: "Blog deleted succesfully", ok: true });
-  } catch(e) {
-    errorMessage(res, e, 401)
+  } catch (e) {
+    errorMessage(res, e, 401);
   }
 });
 

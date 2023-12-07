@@ -9,6 +9,7 @@ const blogRoutes = require("./routes/blog");
 const adminRoutes = require("./routes/admin");
 const musicRoutes = require("./routes/music");
 const softwareRouter = require("./routes/software");
+const emailRoutes = require("./routes/email");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.use("/api", blogRoutes);
 app.use("/admin", adminRoutes);
 app.use("/music", musicRoutes);
 app.use("/software", softwareRouter);
+app.use("/email", emailRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URI)

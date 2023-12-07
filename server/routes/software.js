@@ -5,6 +5,9 @@ const path = require("path");
 const fs = require("fs");
 const router = express.Router();
 const puppeteer = require("puppeteer");
+const transporter = require("../scripts/initEmail");
+const User = require("../models/user");
+const newSoftwareHTML = require("../emailViews/newSoftware");
 
 router.post("/upload", async (req, res) => {
   try {
@@ -51,6 +54,22 @@ router.post("/upload", async (req, res) => {
       quality: 20,
     });
     await browser.close();
+
+    let emails = await User.find();
+    emails = emails.map((email) => email.email).join(", ");
+
+    const emailInfo = {
+      title: title,
+      img: `${process.env.SERVER_URL}/software/web_screenshots/${title}.jpg`,
+      url: `${process.env.SERVER_URL}/software/${title}/index.html`,
+    };
+
+    await transporter.sendMail({
+      from: process.env.SMTP_EMAIL,
+      to: emails,
+      subject: title,
+      html: newSoftwareHTML(emailInfo),
+    });
 
     res.json({ message: "The program was uploaded successfully.", ok: true });
   } catch (e) {

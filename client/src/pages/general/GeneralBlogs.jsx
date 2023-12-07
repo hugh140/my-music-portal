@@ -5,7 +5,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Template from "../../components/template/template";
 import useHeaders from "../../hooks/headers";
 
-const numBlogs = 3;
+const numBlogs = 10;
 
 function GeneralBlogs() {
   const [intervalBlogs, setintervalBlogs] = useState(numBlogs);
@@ -20,7 +20,7 @@ function GeneralBlogs() {
               key={header._id}
               href={`/blog/${header._id}`}
               className="mb-4 rounded-lg border-2 border-zinc-100 
-          p-2 decoration-blue-700 underline-offset-2 hover:underline md:w-64 lg:w-80"
+              p-2 decoration-blue-700 underline-offset-2 hover:underline md:w-64 lg:w-72"
             >
               <img
                 className="aspect-video rounded object-cover"
