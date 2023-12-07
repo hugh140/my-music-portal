@@ -117,12 +117,13 @@ function AdminPage() {
           >
             <FontAwesomeIcon icon={faPlus} /> Publicar
           </button>
-          <button
+          <a
             className="rounded border-2 border-black bg-zinc-100 p-2 
             text-black hover:bg-zinc-200"
+            href="/adminPanel/users"
           >
-            <FontAwesomeIcon icon={faUsers} /> Registrar usuarios
-          </button>
+            <FontAwesomeIcon icon={faUsers} /> Administrar usuarios
+          </a>
         </div>
         <div className="flex flex-row">
           <button

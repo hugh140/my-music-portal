@@ -77,8 +77,6 @@ function BlogEdit() {
   async function handleSubmit(evt) {
     evt.preventDefault();
     setLoader(true);
-    const buildedJson = await jsonPostBuilder(evt);
-    console.log(buildedJson);
     try {
       const serverUrl = import.meta.env.VITE_SERVER_URL;
       const buildedJson = await jsonPostBuilder(evt);

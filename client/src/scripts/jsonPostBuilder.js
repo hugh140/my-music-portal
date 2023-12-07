@@ -6,17 +6,19 @@ function jsonPostBuilder(evt) {
     const formData = new FormData(evt.target);
 
     const imgFiles = [formData.get("header")];
+
     for (const img of formData.getAll("img")) imgFiles.push(img);
 
     const base64Imgs = [];
-    for (const file of imgFiles)
-      toBase64Binaries(file, (binaries) => {
+    (async function processImages() {
+      for (const file of imgFiles) {
+        const binaries = await toBase64Binaries(file);
         base64Imgs.push(binaries);
-      });
+      }
+    })();
 
     const buildedJson = { title: null, headerImg: null, blogContent: [] };
     let indexImgs = 0;
-
     setTimeout(() => {
       for (const entry of formData)
         switch (entry[0]) {
@@ -46,7 +48,6 @@ function jsonPostBuilder(evt) {
             indexImgs++;
             break;
         }
-
       resolve(JSON.stringify(buildedJson));
     }, 50 * imgFiles.length);
   });

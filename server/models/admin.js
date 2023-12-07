@@ -14,6 +14,10 @@ const adminSchema = new Schema({
     type: String,
     required: true,
   },
+  type: {
+    type: String,
+    default: "normal",
+  },
 });
 
 module.exports = model("Admin", adminSchema);

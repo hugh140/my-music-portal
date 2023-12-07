@@ -12,6 +12,7 @@ import { BlogEdit } from "./pages/admin/BlogEdit";
 import SoftwareUpload from "./pages/admin/SoftwareUpload";
 import GeneralPages from "./pages/general/GeneralPages";
 import SoftwareEdit from "./pages/admin/SoftwareEdit";
+import UserPage from "./pages/admin/UsersPage";
 
 function App() {
   return (
@@ -30,8 +31,12 @@ function App() {
           path="/adminPanel/upload/software"
           element={<SoftwareUpload />}
         />
-        <Route path="/adminPanel/edit/software/:name" element={<SoftwareEdit />} />
+        <Route
+          path="/adminPanel/edit/software/:name"
+          element={<SoftwareEdit />}
+        />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/adminPanel/users" element={<UserPage />} />
       </Routes>
     </BrowserRouter>
   );

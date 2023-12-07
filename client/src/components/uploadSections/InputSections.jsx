@@ -22,11 +22,11 @@ function ImgSection({ name, value, index }) {
       getImgFromUrl(value, (imgUrl, blob) => {
         const inputFile = document.getElementById("imgInput" + index);
         const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(new File([blob], "ImgFile"));
+        dataTransfer.items.add(new File([blob], name));
         inputFile.files = dataTransfer.files;
         setInputImg(imgUrl);
       });
-  }, [value, index]);
+  }, [value, index, name]);
 
   return (
     <div
