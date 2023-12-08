@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Template from "../../components/template/template";
+import Template from "../../components/template/Template";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";

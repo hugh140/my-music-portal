@@ -4,7 +4,7 @@ const errorMessage = require("../scripts/errorHandler");
 const transporter = require("../scripts/initEmail");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const newBlogsHTML = require("../emailViews/newBlogs")
+const newBlogsHTML = require("../emailViews/newBlogs");
 const {
   saveImgBinaries,
   deleteImages,
@@ -73,7 +73,16 @@ router.post("/blog", async (req, res) => {
     if (!token)
       throw new Error("It's necessary to be logged for execute this action.");
 
-    const userName = await jwt.verify(token, process.env.SECRET).name;
+    const userInfo = await jwt.verify(token, process.env.SECRET);
+
+    if (
+      !(
+        userInfo.adminType === "writter" ||
+        userInfo.adminType === "editor" ||
+        userInfo.adminType === "superAdmin"
+      )
+    )
+      throw new Error("You're not authorized for post new blogs.");
 
     saveBlogImgs(blog);
 
@@ -81,7 +90,7 @@ router.post("/blog", async (req, res) => {
       title: blog.title,
       headerImg: blog.headerImg,
       blogContent: blog.blogContent,
-      author: userName,
+      author: userInfo.name,
     });
 
     const publishedBlog = await newBlog.save();
@@ -112,7 +121,12 @@ router.put("/blog/:id", async (req, res) => {
     if (!token)
       throw new Error("It's necessary to be logged for execute this action.");
 
-    const userName = await jwt.verify(token, process.env.SECRET).name;
+    const userInfo = await jwt.verify(token, process.env.SECRET);
+
+    if (
+      !(userInfo.adminType === "editor" || userInfo.adminType === "superAdmin")
+    )
+      throw new Error("You're not authorized for update blogs.");
 
     saveBlogImgs(blog);
 
@@ -120,7 +134,7 @@ router.put("/blog/:id", async (req, res) => {
       title: blog.title,
       headerImg: blog.headerImg,
       blogContent: blog.blogContent,
-      author: userName,
+      author: userInfo.name,
     };
 
     const response = await Blog.findOneAndUpdate({ _id: id }, updateBlog);
@@ -139,7 +153,12 @@ router.delete("/blog/:id", async (req, res) => {
     if (!token)
       throw new Error("It's necessary to be logged for execute this action.");
 
-    await jwt.verify(token, process.env.SECRET);
+    const userInfo = await jwt.verify(token, process.env.SECRET);
+
+    if (
+      !(userInfo.adminType === "editor" || userInfo.adminType === "superAdmin")
+    )
+      throw new Error("You're not authorized for delete blogs.");
 
     const response = await Blog.findOneAndDelete({ _id: id });
     deleteBlogImgs(response);

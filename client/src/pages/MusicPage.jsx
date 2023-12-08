@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
-import Template from "../components/template/template";
+import Template from "../components/template/Template";
 import { useParams } from "react-router-dom";
 import useRelease from "../hooks/release";
 

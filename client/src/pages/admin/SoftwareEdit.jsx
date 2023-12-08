@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Template from "../../components/template/template";
+import Template from "../../components/template/Template";
 import fileAsciiTree from "../../scripts/fileAsciiTree";
 import { useParams } from "react-router-dom";
 
@@ -60,10 +60,10 @@ function SoftwareEdit() {
       if (response.ok === true) {
         setAlert({ render: true, ok: true });
         window.location.href = "/adminPanel";
-      } else throw new Error(response.message);
+      } else throw response.message;
       setLoader(false);
     } catch (e) {
-      setAlert({ render: true, ok: false, message: String(e) });
+      setAlert({ render: true, ok: false, message: e });
       setLoader(false);
       setTimeout(() => {
         setAlert({ render: false, ok: false });

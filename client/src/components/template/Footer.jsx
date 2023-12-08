@@ -36,7 +36,7 @@ function Footer({ info }) {
                       rel="noreferrer"
                       target="_blank"
                       className={`underline-offset-3 underline-${socialMedia.color} 
-                    hover:underline`}
+                      hover:underline`}
                     >
                       <FontAwesomeIcon
                         className="me-2"

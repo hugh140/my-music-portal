@@ -5,11 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 import AdminModal from "../../components/adminPage/AdminModal";
 import BlogList from "../../components/adminPage/BlogsList";
 import SoftwareList from "../../components/adminPage/SoftwareList";
-import Template from "../../components/template/template";
+import Template from "../../components/template/Template";
 
 const buttonOptions = [
   { name: "Blog", link: "/adminPanel/upload/blog" },
@@ -44,6 +45,11 @@ function AdminPage() {
     setModalDelete(true);
   }
 
+  function handleLogOut() {
+    document.cookie = "HR=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    window.location.reload();
+  }
+
   async function deleteBlog() {
     try {
       setLoader(true);
@@ -59,7 +65,7 @@ function AdminPage() {
       if (response.ok) {
         setAlert("Se ha eliminado correctamente.");
         window.location.reload();
-      } else throw new Error("Ha ocurrido un error al eliminar el blog.");
+      } else throw response.message;
       setLoader(false);
     } catch (e) {
       setLoader(false);
@@ -124,6 +130,13 @@ function AdminPage() {
           >
             <FontAwesomeIcon icon={faUsers} /> Administrar usuarios
           </a>
+          <button
+            className="rounded border-2 border-red-700 bg-red-50 p-2 text-red-600 
+            hover:bg-red-100"
+            onClick={handleLogOut}
+          >
+            <FontAwesomeIcon icon={faRightFromBracket} /> Cerrar Sesión
+          </button>
         </div>
         <div className="flex flex-row">
           <button

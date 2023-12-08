@@ -1,4 +1,4 @@
-import Template from "../components/template/template";
+import Template from "../components/template/Template";
 import useBlog from "../hooks/blog";
 import { useParams } from "react-router-dom";
 

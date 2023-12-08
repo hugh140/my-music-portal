@@ -13,6 +13,7 @@ import SoftwareUpload from "./pages/admin/SoftwareUpload";
 import GeneralPages from "./pages/general/GeneralPages";
 import SoftwareEdit from "./pages/admin/SoftwareEdit";
 import UserPage from "./pages/admin/UsersPage";
+import ContactPage from "./pages/ContactPage";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/adminPanel/users" element={<UserPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </BrowserRouter>
   );

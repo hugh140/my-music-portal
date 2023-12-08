@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Template from "../../components/template/template";
+import Template from "../../components/template/Template";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import useUsers from "../../hooks/users";

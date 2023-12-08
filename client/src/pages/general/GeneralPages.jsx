@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-import Template from "../../components/template/template";
+import Template from "../../components/template/Template";
 import useSoftware from "../../hooks/software";
 
 function GeneralPages() {

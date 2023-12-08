@@ -27,9 +27,9 @@ function EmailForm() {
       setLoader(false);
       setTimeout(() => setAlert(null), 2500);
       if (response.ok) setAlert("¡Te has suscrito correctamente!");
-      else throw new Error(response.message);
+      else throw response.message;
     } catch (e) {
-      setAlert(String(e));
+      setAlert(e);
     }
   }
 

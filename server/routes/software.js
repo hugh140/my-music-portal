@@ -22,7 +22,16 @@ router.post("/upload", async (req, res) => {
     const files = req.files.pageFiles;
     if (!files) throw new Error("It's necessary upload any file.");
 
-    jwt.verify(token, process.env.SECRET);
+    const userInfo = await jwt.verify(token, process.env.SECRET);
+
+    if (
+      !(
+        userInfo.adminType === "writter" ||
+        userInfo.adminType === "editor" ||
+        userInfo.adminType === "superAdmin"
+      )
+    )
+      throw new Error("You're not authorized for post new web apps.");
 
     const filePath =
       path.join(__dirname, "..", "public", "software", title) + "/";
@@ -108,7 +117,12 @@ router.put("/update/:name", async (req, res) => {
     const files = req.files.pageFiles;
     if (!files) throw new Error("It's necessary upload any file.");
 
-    jwt.verify(token, process.env.SECRET);
+    const userInfo = await jwt.verify(token, process.env.SECRET);
+
+    if (
+      !(userInfo.adminType === "editor" || userInfo.adminType === "superAdmin")
+    )
+      throw new Error("You're not authorized for update blogs.");
 
     if (!files.some((file) => file.name.split("/").at(-1) === "index.html"))
       throw new Error(
@@ -165,7 +179,12 @@ router.delete("/delete/:name", async (req, res) => {
 
     if (!name) throw new Error("The name parameter is blank.");
 
-    jwt.verify(token, process.env.SECRET);
+    const userInfo = await jwt.verify(token, process.env.SECRET);
+
+    if (
+      !(userInfo.adminType === "editor" || userInfo.adminType === "superAdmin")
+    )
+      throw new Error("You're not authorized for delete blogs.");
 
     const dirPath = path.join(__dirname, "..", "public", "software") + "/";
     await fs.promises.rm(dirPath + name, { recursive: true });

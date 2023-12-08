@@ -5,7 +5,7 @@ function newBlogsHTML(blog) {
       <h1>${blog.title}</h1>
       <img src="${blog.headerImg}" />
       <p>${
-        blog.blogContent.find((content) => content.type === "paragraph").content
+        blog?.blogContent?.find((content) => content.type === "paragraph")?.content
       }</p>
     </a>
   `;

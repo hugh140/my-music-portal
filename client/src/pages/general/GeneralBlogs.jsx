@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
-import Template from "../../components/template/template";
+import Template from "../../components/template/Template";
 import useHeaders from "../../hooks/headers";
 
 const numBlogs = 10;

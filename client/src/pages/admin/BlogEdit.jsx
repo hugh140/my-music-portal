@@ -4,7 +4,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-import Template from "../../components/template/template";
+import Template from "../../components/template/Template";
 import Sections from "../../components/uploadSections/Sections";
 import { ImgSection } from "../../components/uploadSections/InputSections";
 import OptionsBar from "../../components/uploadSections/optionsBar";
@@ -93,9 +93,9 @@ function BlogEdit() {
       if (response.ok === true) {
         setAlert({ render: true, ok: true });
         window.location.href = "/adminPanel";
-      } else throw new Error(response.message);
+      } else throw response.message;
     } catch (e) {
-      setAlert({ render: true, ok: false, message: String(e) });
+      setAlert({ render: true, ok: false, message: e });
       setLoader(false);
       setTimeout(() => {
         setAlert({ render: false, ok: false });

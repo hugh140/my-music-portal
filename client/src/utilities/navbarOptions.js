@@ -3,6 +3,6 @@ const navbarOptions = [
   { text: "Blog", link: "/general/blogs" },
   { text: "Mi música", link: "/general/music" },
   { text: "Software", link: "/general/software" },
-  { text: "Contacto", link: "#" },
+  { text: "Contacto", link: "/contact" },
 ];
 export default navbarOptions;

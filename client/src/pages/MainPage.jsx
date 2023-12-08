@@ -1,4 +1,4 @@
-import Template from "../components/template/template";
+import Template from "../components/template/Template";
 import Headline from "../components/indexPage/Headline";
 import BlogRecents from "../components/indexPage/BlogRecents";
 import MusicRecents from "../components/indexPage/MusicRecents";
