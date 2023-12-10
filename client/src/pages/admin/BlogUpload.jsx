@@ -7,7 +7,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Template from "../../components/template/Template";
 import Sections from "../../components/uploadSections/Sections";
 import { ImgSection } from "../../components/uploadSections/InputSections";
-import OptionsBar from "../../components/uploadSections/optionsBar";
+import OptionsBar from "../../components/uploadSections/OptionsBar";
 
 import jsonPostBuilder from "../../scripts/jsonPostBuilder";
 import { useNavigate } from "react-router-dom";
