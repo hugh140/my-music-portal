@@ -125,7 +125,7 @@ function AdminPage() {
           </button>
           <a
             className="rounded border-2 border-black bg-zinc-100 p-2 
-            text-black hover:bg-zinc-200"
+            text-black hover:bg-zinc-200 text-center"
             href="/adminPanel/users"
           >
             <FontAwesomeIcon icon={faUsers} /> Administrar usuarios
