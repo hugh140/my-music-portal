@@ -102,12 +102,13 @@ router.post("/blog", async (req, res) => {
     let emails = await User.find();
     emails = emails.map((email) => email.email).join(", ");
 
-    await transporter.sendMail({
-      from: process.env.SMTP_EMAIL,
-      to: emails,
-      subject: blog.title,
-      html: newBlogsHTML(publishedBlog),
-    });
+    if (emails)
+      await transporter.sendMail({
+        from: process.env.SMTP_EMAIL,
+        to: emails,
+        subject: blog.title,
+        html: newBlogsHTML(publishedBlog),
+      });
 
     res.json({ message: "Blog saved succesfully", ok: true });
   } catch (error) {
