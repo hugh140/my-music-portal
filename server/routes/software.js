@@ -33,6 +33,9 @@ router.post("/upload", async (req, res) => {
     )
       throw new Error("You're not authorized for post new web apps.");
 
+    if (!fs.existsSync(__dirname + "/../public/software"))
+      fs.mkdirSync(__dirname + "/../public/software", { recursive: true });
+
     const filePath =
       path.join(__dirname, "..", "public", "software", title) + "/";
     if (!files.some((file) => file.name.split("/").at(-1) === "index.html"))
@@ -88,6 +91,8 @@ router.post("/upload", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
+    if (!fs.existsSync(__dirname + "/../public/software"))
+      fs.mkdirSync(__dirname + "/../public/software", { recursive: true });
     const dirPath = path.join(__dirname, "..", "public", "software");
     const dir = await fs.promises.readdir(dirPath);
     dir.splice(dir.indexOf("web_screenshots"), 1);
@@ -128,6 +133,9 @@ router.put("/update/:name", async (req, res) => {
       throw new Error(
         "It's necessary an index.html file for upload the files."
       );
+
+    if (!fs.existsSync(__dirname + "/../public/software"))
+      fs.mkdirSync(__dirname + "/../public/software", { recursive: true });
 
     const dirPath = path.join(__dirname, "..", "public", "software") + "/";
     await fs.promises.rm(dirPath + name, { recursive: true });

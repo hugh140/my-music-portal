@@ -5,6 +5,7 @@ const transporter = require("../scripts/initEmail");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const newBlogsHTML = require("../emailViews/newBlogs");
+const fs = require("fs");
 const {
   saveImgBinaries,
   deleteImages,
@@ -84,6 +85,9 @@ router.post("/blog", async (req, res) => {
     )
       throw new Error("You're not authorized for post new blogs.");
 
+    if (!fs.existsSync(__dirname + "/../public/images"))
+      fs.mkdirSync(__dirname + "/../public/images", { recursive: true });
+
     saveBlogImgs(blog);
 
     const newBlog = new Blog({
@@ -127,6 +131,9 @@ router.put("/blog/:id", async (req, res) => {
       !(userInfo.adminType === "editor" || userInfo.adminType === "superAdmin")
     )
       throw new Error("You're not authorized for update blogs.");
+
+    if (!fs.existsSync(__dirname + "/../public/images"))
+      fs.mkdirSync(__dirname + "/../public/images", { recursive: true });
 
     saveBlogImgs(blog);
 
