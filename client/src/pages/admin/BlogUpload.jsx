@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, createContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,7 @@ import { ImgSection } from "../../components/uploadSections/InputSections";
 import OptionsBar from "../../components/uploadSections/OptionsBar";
 
 import jsonPostBuilder from "../../scripts/jsonPostBuilder";
-import { useNavigate } from "react-router-dom";
+import useSession from "../../hooks/session";
 
 const UploadContext = createContext();
 
@@ -19,11 +19,8 @@ function BlogUpload() {
   const [lastDeleted, setLastDeleted] = useState(Infinity);
   const [alert, setAlert] = useState({ render: false, ok: false });
   const [loader, setLoader] = useState(false);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!document.cookie) navigate("/login?redirect=/adminPanel/upload/blog");
-  }, [navigate]);
+  useSession("/login?redirect=/adminPanel/upload/blog");
 
   function addSection(type, index) {
     const el = [...elements];

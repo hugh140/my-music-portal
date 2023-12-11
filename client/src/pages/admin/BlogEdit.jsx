@@ -8,9 +8,9 @@ import Template from "../../components/template/Template";
 import Sections from "../../components/uploadSections/Sections";
 import { ImgSection } from "../../components/uploadSections/InputSections";
 import OptionsBar from "../../components/uploadSections/OptionsBar";
+import useSession from "../../hooks/session";
 
 import jsonPostBuilder from "../../scripts/jsonPostBuilder";
-import { useNavigate } from "react-router-dom";
 import useBlog from "../../hooks/blog";
 import { useParams } from "react-router-dom";
 
@@ -21,15 +21,11 @@ function BlogEdit() {
   const [lastDeleted, setLastDeleted] = useState(Infinity);
   const [alert, setAlert] = useState({ render: false, ok: false });
   const [loader, setLoader] = useState(false);
-  const navigate = useNavigate();
 
   const { id } = useParams();
   const blog = useBlog(id);
 
-  useEffect(() => {
-    if (!document.cookie)
-      navigate(`/login?redirect=/adminPanel/edit/blog/${id}`);
-  }, [navigate, id, blog]);
+  useSession(`/login?redirect=/adminPanel/edit/blog/${id}`);
 
   useEffect(() => {
     if (!blog.blogContent) return;

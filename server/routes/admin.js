@@ -24,6 +24,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/session", async (req, res) => {
+  try {
+    const token = req.cookies.HR;
+    await jwt.verify(token, process.env.SECRET);
+    res.json({ message: "You're logged correctly.", ok: true });
+  } catch (e) {
+    errorMessage(res, e, 401);
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     const name = req.query.name;
@@ -80,7 +90,6 @@ router.post("/login", async (req, res) => {
         maxAge: 1000 * 60 * 60,
         sameSite: "none",
         httpOnly: false,
-        domain: "onrender.com"
       });
       res.json({ message: "You are logged successfully.", ok: true });
     } else

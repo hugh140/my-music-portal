@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import useSession from "../../hooks/session";
 import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Template from "../../components/template/Template";
@@ -19,7 +19,6 @@ function SoftwareEdit() {
   const [loader, setLoader] = useState(false);
   const [asciiDir, setAsciiDir] = useState("");
   const { name } = useParams();
-  const navigate = useNavigate();
 
   const { getRootProps, getInputProps } = useDropzone({
     multiple: true,
@@ -32,10 +31,7 @@ function SoftwareEdit() {
     },
   });
 
-  useEffect(() => {
-    if (!document.cookie)
-      navigate(`/login?redirect=/adminPanel/edit/software/${name}`);
-  }, [navigate, name]);
+  useSession(`/login?redirect=/adminPanel/edit/software/${name}`);
 
   async function handleSubmit(evt) {
     evt.preventDefault();

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +10,7 @@ import AdminModal from "../../components/adminPage/AdminModal";
 import BlogList from "../../components/adminPage/BlogsList";
 import SoftwareList from "../../components/adminPage/SoftwareList";
 import Template from "../../components/template/Template";
+import useSession from "../../hooks/session";
 
 const buttonOptions = [
   { name: "Blog", link: "/adminPanel/upload/blog" },
@@ -27,11 +27,8 @@ function AdminPage() {
   const [postSelector, setPostSelector] = useState(
     <BlogList handleDelete={handleDeleteBlog} />
   );
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!document.cookie) navigate("/login?redirect=/adminPanel");
-  }, [navigate]);
+  useSession("/login?redirect=/adminPanel");
 
   function handleDeleteBlog(blogId) {
     setAppName(null);

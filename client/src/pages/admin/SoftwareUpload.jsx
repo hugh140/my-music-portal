@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import useSession from "../../hooks/session";
 import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Template from "../../components/template/Template";
@@ -17,7 +17,6 @@ function SoftwareUpload() {
   const [alert, setAlert] = useState({ render: false, ok: false });
   const [loader, setLoader] = useState(false);
   const [asciiDir, setAsciiDir] = useState("");
-  const navigate = useNavigate();
 
   const { getRootProps, getInputProps } = useDropzone({
     multiple: true,
@@ -30,10 +29,7 @@ function SoftwareUpload() {
     },
   });
 
-  useEffect(() => {
-    if (!document.cookie)
-      navigate("/login?redirect=/adminPanel/upload/software");
-  }, [navigate]);
+  useSession("/login?redirect=/adminPanel/upload/software");
 
   async function handleSubmit(evt) {
     evt.preventDefault();

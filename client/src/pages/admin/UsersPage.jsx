@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Template from "../../components/template/Template";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import useSession from "../../hooks/session";
 import useUsers from "../../hooks/users";
 import EditUser from "../../components/adminPage/EditUser";
 import RegistryUser from "../../components/adminPage/RegistryUser";
@@ -15,12 +15,9 @@ function UserPage() {
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState(null);
   const [alert, setAlert] = useState(null);
-  const navigate = useNavigate();
   const users = useUsers();
 
-  useEffect(() => {
-    if (!document.cookie) navigate("/login?redirect=/adminPanel/users");
-  }, [navigate]);
+  useSession("/login?redirect=/adminPanel/users");
 
   function handleEdit(user) {
     setPanel(true);
