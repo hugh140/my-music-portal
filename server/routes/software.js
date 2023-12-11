@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
 const router = express.Router();
-const puppeteer = require("puppeteer");
 const transporter = require("../scripts/initEmail");
 const User = require("../models/user");
 const newSoftwareHTML = require("../emailViews/newSoftware");
@@ -22,6 +21,9 @@ router.post("/upload", async (req, res) => {
     const files = req.files.pageFiles;
     if (!files) throw new Error("It's necessary upload any file.");
 
+    const headerImg = req.files.headerImg;
+    if (!headerImg) throw new Error("It's necessary upload an image header.");
+
     const userInfo = await jwt.verify(token, process.env.SECRET);
 
     if (
@@ -35,9 +37,14 @@ router.post("/upload", async (req, res) => {
 
     if (!fs.existsSync(__dirname + "/../public/software"))
       fs.mkdirSync(__dirname + "/../public/software", { recursive: true });
+    if (!fs.existsSync(__dirname + "/../public/software/web_screenshots"))
+      fs.mkdirSync(__dirname + "/../public/software/web_screenshots", {
+        recursive: true,
+      });
 
     const filePath =
       path.join(__dirname, "..", "public", "software", title) + "/";
+
     if (!files.some((file) => file.name.split("/").at(-1) === "index.html"))
       throw new Error(
         "It's necessary an index.html file for upload the files."
@@ -50,28 +57,16 @@ router.post("/upload", async (req, res) => {
       );
       await file.mv(filePath + file.name.split("/").slice(2).join("/"));
     }
-    const pageUrl = path.join(
-      process.env.SERVER_URL,
-      "/software",
-      title,
-      "index.html"
-    );
 
-    const browser = await puppeteer.launch({
-      headless: "new",
-      executablePath:
-        process.env.NODE_ENV === "production"
-          ? process.env.PUPPETEER_EXECUTABLE_PATH
-          : puppeteer.executablePath(),
-    });
-    const page = await browser.newPage();
-    await page.goto(pageUrl);
-    await page.screenshot({
-      path: `public/software/web_screenshots/${title}.jpg`,
-      optimizeForSpeed: true,
-      quality: 20,
-    });
-    await browser.close();
+    const imgPath = path.join(
+      __dirname,
+      "..",
+      "public",
+      "software",
+      "web_screenshots",
+      title + ".jpg"
+    );
+    await headerImg.mv(imgPath);
 
     let emails = await User.find();
     emails = emails.map((email) => email.email).join(", ");
@@ -82,12 +77,13 @@ router.post("/upload", async (req, res) => {
       url: `${process.env.SERVER_URL}/software/${title}/index.html`,
     };
 
-    await transporter.sendMail({
-      from: process.env.SMTP_EMAIL,
-      to: emails,
-      subject: title,
-      html: newSoftwareHTML(emailInfo),
-    });
+    if (emails)
+      await transporter.sendMail({
+        from: process.env.SMTP_EMAIL,
+        to: emails,
+        subject: title,
+        html: newSoftwareHTML(emailInfo),
+      });
 
     res.json({ message: "The program was uploaded successfully.", ok: true });
   } catch (e) {
@@ -128,6 +124,9 @@ router.put("/update/:name", async (req, res) => {
     const files = req.files.pageFiles;
     if (!files) throw new Error("It's necessary upload any file.");
 
+    const headerImg = req.files.headerImg;
+    if (!headerImg) throw new Error("It's necessary upload an image header.");
+
     const userInfo = await jwt.verify(token, process.env.SECRET);
 
     if (
@@ -142,6 +141,10 @@ router.put("/update/:name", async (req, res) => {
 
     if (!fs.existsSync(__dirname + "/../public/software"))
       fs.mkdirSync(__dirname + "/../public/software", { recursive: true });
+    if (!fs.existsSync(__dirname + "/../public/software/web_screenshots"))
+      fs.mkdirSync(__dirname + "/../public/software/web_screenshots", {
+        recursive: true,
+      });
 
     const dirPath = path.join(__dirname, "..", "public", "software") + "/";
     await fs.promises.rm(dirPath + name, { recursive: true });
@@ -160,22 +163,15 @@ router.put("/update/:name", async (req, res) => {
       await file.mv(filePath + file.name.split("/").slice(2).join("/"));
     }
 
-    const pageUrl = path.join(
-      process.env.SERVER_URL,
-      "/software",
-      newName,
-      "index.html"
+    const imgPath = path.join(
+      __dirname,
+      "..",
+      "public",
+      "software",
+      "web_screenshots",
+      newName + ".jpg"
     );
-
-    const browser = await puppeteer.launch({ headless: "new" });
-    const page = await browser.newPage();
-    await page.goto(pageUrl);
-    await page.screenshot({
-      path: `public/software/web_screenshots/${newName}.jpg`,
-      optimizeForSpeed: true,
-      quality: 20,
-    });
-    await browser.close();
+    await headerImg.mv(imgPath);
 
     res.json({ message: "The program was updated successfully.", ok: true });
   } catch (e) {

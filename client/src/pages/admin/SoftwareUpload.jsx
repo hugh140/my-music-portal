@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Template from "../../components/template/Template";
 import fileAsciiTree from "../../scripts/fileAsciiTree";
+import { ImgSection } from "../../components/uploadSections/InputSections";
 
 import {
   faSpinner,
@@ -21,11 +22,11 @@ function SoftwareUpload() {
   const { getRootProps, getInputProps } = useDropzone({
     multiple: true,
     onDrop: async (res) => {
-      setLoader(true)
+      setLoader(true);
       setFiles(res);
       const asciiTree = await fileAsciiTree(res);
       setAsciiDir(asciiTree);
-      setLoader(false)
+      setLoader(false);
     },
   });
 
@@ -40,6 +41,7 @@ function SoftwareUpload() {
         fileData.append("pageFiles", new File([file], file.path));
       }
       const formData = new FormData(evt.target);
+      fileData.append("headerImg", formData.get("header"));
 
       const serverUrl = import.meta.env.VITE_SERVER_URL;
       let response = await fetch(
@@ -81,6 +83,10 @@ function SoftwareUpload() {
             className="mb-4 w-full rounded-md border-2 border-zinc-100 p-2"
             required
           />
+          <br />
+          <label className="mb-5 text-xl font-bold">Portada:</label>
+          <br />
+          <ImgSection name="header" />
           <br />
           <label htmlFor="version" className="text-lg font-bold">
             Archivos:
