@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: ["https://music-portal-u7rn.onrender.com", "http://localhost:5173"],
+    origin: ["https://music-portal-u7rn.onrender.com"],
     credentials: true,
   })
 );
