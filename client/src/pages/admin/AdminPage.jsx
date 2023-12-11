@@ -31,7 +31,6 @@ function AdminPage() {
 
   useEffect(() => {
     if (!document.cookie) navigate("/login?redirect=/adminPanel");
-    console.log(document.cookie);
   }, [navigate]);
 
   function handleDeleteBlog(blogId) {
