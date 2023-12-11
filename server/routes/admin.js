@@ -79,7 +79,7 @@ router.post("/login", async (req, res) => {
         secure: true,
         maxAge: 1000 * 60 * 60,
         sameSite: "none",
-        httpOnly: false,
+        domain: ".vercel.app",
       });
       res.json({ message: "You are logged successfully.", ok: true });
     } else
