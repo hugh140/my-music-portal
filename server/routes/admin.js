@@ -76,10 +76,9 @@ router.post("/login", async (req, res) => {
         }
       );
       res.cookie("HR", token, {
-        secure: false,
+        secure: true,
         maxAge: 1000 * 60 * 60,
-        sameSite: "lax",
-        
+        sameSite: "none",
       });
       res.json({ message: "You are logged successfully.", ok: true });
     } else
