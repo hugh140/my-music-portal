@@ -80,7 +80,7 @@ router.post("/login", async (req, res) => {
         maxAge: 1000 * 60 * 60,
         sameSite: "none",
         httpOnly: false,
-        domain: ".vercel.app",
+        domain: "my-music-portal.vercel.app",
       });
       res.json({ message: "You are logged successfully.", ok: true });
     } else
