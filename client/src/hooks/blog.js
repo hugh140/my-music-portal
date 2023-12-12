@@ -6,9 +6,10 @@ function useBlog(id) {
     const serverURL = import.meta.env.VITE_SERVER_URL;
     fetch(serverURL + "api/blog/" + id)
       .then((res) => res.json())
-      .then((res) => setBlog(res));
+      .then((res) => setBlog(res))
+      .catch((err) => console.error(err));
   }, [id]);
 
-  return blog
+  return blog;
 }
 export default useBlog;

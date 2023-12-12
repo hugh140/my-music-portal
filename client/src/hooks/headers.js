@@ -10,7 +10,8 @@ function useHeaders(start, end) {
         const tempBlogs = [...blogs];
         for (const blgs of res) tempBlogs.push(blgs);
         setBlogs(tempBlogs);
-      });
+      })
+      .catch((err) => console.error(err));
   }, [start, end]);
 
   return blogs;

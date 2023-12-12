@@ -4,9 +4,11 @@ function useRelease(id) {
   const [release, setRelease] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:3000/music/release/${id}`)
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
+    fetch(`${serverUrl}music/release/${id}`)
       .then((res) => res.json())
-      .then((res) => setRelease(res));
+      .then((res) => setRelease(res))
+      .catch((err) => console.error(err))
   }, [id]);
 
   return release;

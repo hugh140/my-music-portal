@@ -9,7 +9,8 @@ function useUsers() {
       credentials: "include",
     })
       .then((res) => res.json())
-      .then((res) => setUsers(res));
+      .then((res) => setUsers(res))
+      .catch((err) => console.error(err));
   }, []);
 
   return users;

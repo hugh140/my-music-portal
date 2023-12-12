@@ -4,19 +4,16 @@ import { useNavigate } from "react-router-dom";
 function useSession(redirect) {
   const navigate = useNavigate();
   useEffect(() => {
-    try {
-      const serverUrl = import.meta.env.VITE_SERVER_URL;
-      fetch(serverUrl + "admin/session", {
-        method: "GET",
-        credentials: "include",
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
+    fetch(serverUrl + "admin/session", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) navigate(redirect);
       })
-        .then((res) => res.json())
-        .then((res) => {
-          if (!res.ok) navigate(redirect);
-        });
-    } catch (e) {
-      console.error(e);
-    }
+      .catch((err) => console.error(err));
   }, [navigate, redirect]);
 }
 
