@@ -112,24 +112,24 @@ function AdminPage() {
       </AdminModal>
       <Template footer={false} navbar={false}>
         <h1 className="my-3 text-center text-3xl">Panel Administrador</h1>
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <button
             className="rounded border-2 border-green-700 bg-green-50 p-2 text-green-600 
-            hover:bg-green-100"
+            hover:bg-green-600 hover:text-white"
             onClick={() => setModalUpload(true)}
           >
             <FontAwesomeIcon icon={faPlus} /> Publicar
           </button>
           <a
             className="rounded border-2 border-black bg-zinc-100 p-2 
-            text-center text-black hover:bg-zinc-200"
+            text-center text-black hover:bg-black hover:text-white"
             href="/adminPanel/users"
           >
             <FontAwesomeIcon icon={faUsers} /> Administrar usuarios
           </a>
           <button
-            className="rounded border-2 border-red-700 bg-red-50 p-2 text-red-600 
-            hover:bg-red-100"
+            className="rounded border-2 border-red-700 bg-white p-2 text-red-600 
+            hover:bg-red-600 hover:text-white"
             onClick={handleLogOut}
           >
             <FontAwesomeIcon icon={faRightFromBracket} /> Cerrar Sesión
